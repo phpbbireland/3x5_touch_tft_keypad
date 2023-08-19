@@ -20,7 +20,7 @@ Each line of the menu text can contain:
 -  Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}.  
 -  Any combination of keys up to 128 characters.  
 
-After initial programming of the TFT board, all changes are made to the menu0 text file and menu.bmp images on the SD card.  
-The changes are imported from SD card on next booting of the TFT card...  
+After initial programming of the TFT board, all changes are made to the *menu0* text file and *menu.bmp* images on the SD card.  
+The changes are imported from SD card on next boot...    
 
 *See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
