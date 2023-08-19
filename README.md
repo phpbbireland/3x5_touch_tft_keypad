@@ -1,4 +1,4 @@
-# kissmacrokey
+# 3x8_touch_tft_keypad
 An LCD/TFT (Makerfabs-ESP32-S3-SPI-TFT-with-Touch), an Image (320px240px) a few icons for buttons and
 a Text file with 16 lines of text (these are the key presses/macros, see: sample_menu) and we have a macro keypad...
 
