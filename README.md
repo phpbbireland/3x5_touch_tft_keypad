@@ -31,3 +31,7 @@ Each line of the menu text can contain:
 All changes are made to the *menu0* text file and/or the *menu.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
 
 *See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
+
+**Future:**  
+It should be possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 13 buttons ( two would be required for navigation).
+
