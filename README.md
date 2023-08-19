@@ -1,17 +1,25 @@
 # kissmacrokey
+An LCD/TFT (Makerfabs-ESP32-S3-SPI-TFT-with-Touch), an Image (320px240px) a few icons for buttons and
+a Text file with 16 lines of text (these are the key presses/macros, see: sample_menu) and we have a macro keypad...
 
-An LCD/TFT (Makerfabs-ESP32-S3-SPI-TFT-with-Touch), an Image (320x240px) including 16 icons (buttons) and
-a Text file with 16 lines of text...
-  
-Basically we simply use a predesigned 320x240 image containging 16 icons (one for each key)
-and map the their position to touch actions...
-  
-We load the image and read the text file (menu actions) from SD card and that's it...
+**Programming**
+Using Arduino IDE, compile and upload code.ini program to the ESP32S3 SPI board... finished, you can change the buttons (press) actions by editing the menu0 file on the SD card, no need to reprogram...
 
-The text file consists of 15 lines, each containg the actual characters we need to send to the computer...
-Special keys: [ALT], [SHIFT], [CTRL], [SUPER], [SPACE], [TAB], [F1 - [F24]...
+**Basics:**
+We use a 480px by 320px image (see Kiss_MacroKey.jpg for an example) containing 16 icons (one for each key). The touch positions are already programmed and are identified by the red outline squares, so, all we need to do is put some icons on the background image (using your favorite software).
+
+**Edit background image:**
+Load background image, import icon images, place them and save...
+
+**Future**
+I don't currently process the menu lines for special keys, that will follow soon.
+Special keys are: [LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].
   
-Each line can contain:  
+Each line of the menu text can contain:  
    A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program
    Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}
    Any combination of keys up to 128 characters...
+
+After initial programming of the board, all you have to to program/edit/change button actions is:
+  Edit the menu0 file on the SD card, and, add/remove/change the images on the menu image...
+  I will provide a background image without icons so you can add your own using image editing software.
