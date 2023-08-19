@@ -22,4 +22,4 @@ Each line of the menu text can contain:
 
 After initial programming of the board, all you have to change things is, edit the menu0 file and/or add/remove/alter the images on the menu background image.
 
-*I will provide a background image without icons so you can add your own using image editing software.*
+*I will provide a background image without icons so you can add your own using image editing software.* **Grid480x320.bmp**
