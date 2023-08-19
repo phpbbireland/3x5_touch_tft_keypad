@@ -34,4 +34,8 @@ All changes are made to the *menu0* text file and/or the *menu.bmp* image on the
 
 **Future:**  
 It should be possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 13 buttons ( two would be required for navigation).
+...
 
+This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together.
+Hope it's useful to someone.  
+Mike
