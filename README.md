@@ -16,8 +16,8 @@ I don't currently process the menu lines for special keys, that will follow soon
 Special keys are: [LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].  
 
 Each line of the menu text can contain:  
-  A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program
-  Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}
+  A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program  
+  Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}  
   Any combination of keys up to 128 characters...
 
 After initial programming of the board, all you have to change things is, edit the menu0 file and/or add/remove/alter the images on the menu background image.
