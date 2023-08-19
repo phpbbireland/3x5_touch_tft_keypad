@@ -1,26 +1,33 @@
 # 3x5_touch_tft_keypad
 
-An LCD/TFT (Makerfabs-ESP32-S3-SPI-TFT-with-Touch), an Image (320px240px) a few icons for buttons and
-a Text file with 15 lines of text (these are the key presses/macros), see example *sample_menu* text file... voilà, we have a macro keypad...
+**Hardware:**
+- The project uses the Makerfabs-ESP32-S3-SPI-TFT-with-Touch board...
+- A 320px240px image (.bmp) and a few icons for buttons...
+- A text file with 15 lines of text (these are the key presses/macros), see example *sample_menu* text file...
 
-**Programming:**
-Using Arduino IDE, compile and upload *code.ini* program to the ESP32-S3 SPI board. Install any missing libraries (see top of code.ino file for required libraries).  
+**The Basics:**  
+We start with a 480px by 320px background image (Grid480x320.bmp), it consists of 16 button areas (identified by the red outlined squares).
+Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu0.bmp and save to SD card.  
 
-**The Basics:**
-We start with a 480px by 320px background image (Grid480x320.bmp), it consists of 16 button areas (identified by the red outlined squares).  
-Using any image editor, we edit Grid480x320.bmp and insert/import the desired button icons (64px by 64px images works well) into each outlined button 
-icons positions. Once finished, export the final image as menu0.bmp  
+Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.
 
-**Future:**
-I don't currently process the menu lines for special keys, that will follow soon...  
-Special keys are: [LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].  
+**Programming:**  
+Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
+**TBA:**  
+I don't currently process the menu lines for special keys, so currently, it's not quite a Macro keyboard.   
+Generating macro keyboard data is context sensitive, that is, the active program will try to implement the keystrokes, so for testing under Linux I normally open a terminal manually, the press a key...
+
+**Special keys:**  
+[LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].  
+
+**sample_menu:**  
 Each line of the menu text can contain:  
 -  A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program.  
--  Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}.  
+-  Special key combinations: [ALT]+3 or [CTRL][F10] or [SHIFT][CTRL][ALT]+x.  
 -  Any combination of keys up to 128 characters.  
 
-After initial programming of the TFT board, all changes are made to the *menu0* text file and *menu.bmp* images on the SD card.  
-The changes are imported from SD card on next boot...    
+**After initial programming of the TFT board:**  
+All changes are made to the *menu0* text file and/or the *menu.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
 
 *See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
