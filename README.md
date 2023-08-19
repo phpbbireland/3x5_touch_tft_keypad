@@ -61,7 +61,7 @@ It should be possible to implement as many menus as required, for example, menus
 ...
 
 <br>
-<img src="Grid480x320.bmp" width=480>  
+<img src="/images/Grid480x320.bmp" width=480>  
 Optional 5x4 layout (20 key) (keysGrid480x320.bmp),  
 Anything is possible with edits to the code, you could use a larger TFT too...  
 <br><br>
