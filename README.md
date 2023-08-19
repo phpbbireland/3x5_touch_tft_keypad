@@ -1,7 +1,7 @@
 # 3x5_touch_tft_keypad
 
 An LCD/TFT (Makerfabs-ESP32-S3-SPI-TFT-with-Touch), an Image (320px240px) a few icons for buttons and
-a Text file with 16 lines of text (these are the key presses/macros, see: sample_menu) and we have a macro keypad...
+a Text file with 15 lines of text (these are the key presses/macros, see: sample_menu text file) and we have a macro keypad...
 
 **Programming:**
 Using Arduino IDE, compile and upload *code.ini* program to the ESP32-S3 SPI board. Install any missing libraries (see top of code.ino file for required libraries).  
