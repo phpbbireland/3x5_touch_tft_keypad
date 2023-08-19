@@ -6,11 +6,29 @@
 - A text file with 15 lines of text (these are the key presses/macros), see example *sample_menu* text file...
 
 **The Basics:**  
-We start with a 480px by 320px background image (Grid480x320.bmp), it consists of 16 button areas (identified by the red outlined squares).
+We start with a 480px by 320px background image, it consists of 16 button areas (identified by the red outlined squares).
 Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu0.bmp and save to SD card.  
-
-Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.
-
+<br>
+<img src="Grid480x320.bmp" width=480>  
+Grid480x320.bmp  
+<br>
+Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.  
+```menuitem01=freecad
+menuitem02=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad @@ %f @@
+menuitem03=/opt/sublime_text/sublime_text
+menuitem04=/home/Mike/Downloads/arduino-1.8.19/arduino
+menuitem05=+link to program
+menuitem06=[LALT] 3
+menuitem07=/usr/share/playonlinux/playonlinux --run 'Fire' %F
+menuitem08=firefox
+menuitem09=xfce4-terminal
+menuitem10=kcalc
+menuitem11=Back
+menuitem12=meld
+menuitem13=/home/Mike/AppImages/Stellarium.AppImage
+menuitem14=HOME
+menuitem15=ENTER
+```
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
