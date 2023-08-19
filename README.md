@@ -29,6 +29,12 @@ menuitem13=/home/Mike/AppImages/Stellarium.AppImage
 menuitem14=HOME
 menuitem15=ENTER
 ```
+
+<br>
+<img src="Kiss_MacroKey.jpg" width=240>  
+Example of menu screen with a few icons added (Kiss_MacroKey.jpg)  
+<br><br>
+
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
