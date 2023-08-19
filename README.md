@@ -9,7 +9,7 @@
 We start with a 480px by 320px background image, it consists of 16 button areas (identified by the red outlined squares).
 Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu0.bmp and save to SD card.  
 <br>
-<img src="blankbg.bmp" width=480>  
+<img src="/images/blankbg.bmp" width=480>  
 blankbg.bmp  
 <br>
 Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.  
