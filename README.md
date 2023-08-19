@@ -31,7 +31,7 @@ menuitem15=ENTER
 ```
 
 <br>
-<img src="Kiss_MacroKey.jpg" width=240>  
+<img src="/images/menu0.bmp" width=240>  
 Example of menu screen with a few icons added (Kiss_MacroKey.jpg)  
 <br><br>
 
