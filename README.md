@@ -11,7 +11,7 @@ We start with a 480px by 320px background image (Grid480x320.bmp), it consists o
 Using any image editor, we edit Grid480x320.bmp and insert/import the desired button icons (64px by 64px images works well) into each outlined button 
 icons positions. Once finished, export the final image as menu0.bmp  
 
-**Future**
+**Future:**
 I don't currently process the menu lines for special keys, that will follow soon...  
 Special keys are: [LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].  
 
