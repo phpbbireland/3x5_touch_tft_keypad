@@ -9,8 +9,8 @@
 We start with a 480px by 320px background image, it consists of 16 button areas (identified by the red outlined squares).
 Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu0.bmp and save to SD card.  
 <br>
-<img src="Grid480x320.bmp" width=480>  
-Grid480x320.bmp  
+<img src="blankbg.bmp" width=480>  
+blankbg.bmp  
 <br>
 Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.  
 ```menuitem01=freecad
@@ -59,6 +59,12 @@ All changes are made to the *menu0* text file and/or the *menu.bmp* image on the
 **Future:**  
 It should be possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 13 buttons ( two would be required for navigation).
 ...
+
+<br>
+<img src="Grid480x320.bmp" width=480>  
+Optional 5x4 layout (20 key) (keysGrid480x320.bmp),  
+Anything is possible with edits to the code, you could use a larger TFT too...  
+<br><br>
 
 This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together.
 Hope it's useful to someone.  
