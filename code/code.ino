@@ -9,7 +9,6 @@
  *  
  *  We load the image and read the text file (menu actions) from SD card and that's it...
  *  
- *
  *  The text file consists of 15 lines, each containg the actual characters we need to send to the computer...
  *  Special keys: [ALT], [SHIFT], [CTRL], [SUPER], [SPACE], [TAB], [F1 - [F24]...
  *  
@@ -65,8 +64,6 @@
 #define KEY_MAX_LENGTH    20
 #define VALUE_MAX_LENGTH  128
 #define FILE_NAME "/menu0"
-
-
 
 /*
 class LGFX : public lgfx::LGFX_Device
@@ -133,7 +130,6 @@ public:
 };
 */
 
-
 LGFX lcd;
 USBHIDKeyboard Keyboard;  
 SPIClass SD_SPI;          
@@ -182,7 +178,6 @@ void setup(void)
 
 void loop(void)
 {
-   
 }
 
 /* ArduinoGetStarted.com example code Starts */
