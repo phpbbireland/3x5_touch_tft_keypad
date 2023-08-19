@@ -5,6 +5,7 @@ a Text file with 16 lines of text (these are the key presses/macros, see: sample
 
 **Programming:**
 Using Arduino IDE, compile and upload *code.ini* program to the ESP32-S3 SPI board. Install any missing libraries (see top of code.ino file for required libraries).  
+
 **The Basics:**
 We start with a 480px by 320px background image (Grid480x320.bmp), it consists of 16 button areas (identified by the red outlined squares).  
 Using any image editor, we edit Grid480x320.bmp and insert/import the desired button icons (64px by 64px images works well) into each outlined button 
