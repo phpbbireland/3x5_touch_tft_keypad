@@ -17,7 +17,10 @@
  *    A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program
  *    Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}
  *    Any combination of keys up to 128 characters...
- *        
+ *    Singel keys (Alt Ctrl Shift) + a character has neen added.
+ *    Note Ctrl, Alt, and Shift have left and right options e.g, LALT = Left Alt etc...
+ *    To process Ctrl + z (copy) for example, we would add this line to the menu0: [LCTRL]z
+ *
  *
  * Code relating to loading config data from file was created by ArduinoGetStarted.com
  *
@@ -183,7 +186,6 @@ void setup(void)
 
 void loop(void)
 {
-   
 }
 
 /* ArduinoGetStarted.com example code Starts */
@@ -382,7 +384,6 @@ int print_img(fs::FS &fs, String filename, int x, int y)
 
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
-
     f.close();
     return 0;
 }
@@ -458,9 +459,17 @@ void page_switch(int page)
 }
 
 // needs to be more robust... later
+/*
+*  If a nenu lines includes special keys (Left or Right ALT, Left or Right CTRL etc..) we process them...
+*  Then we process the remaining key or text.. So far only single Key + Characters
+*
+*  More work needed for combinations such as ALT + Shift + Key, Ctrl Shift Key, Ctrl + Alt + ? etc..
+*  
+*/
 
 void key_input_process(int value, String str)
 {
+    // Open terminal before processing key presses / macros
     if(str.startsWith("[T]", 0))
     {
         Keyboard.print(TERMINAL);
