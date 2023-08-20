@@ -9,6 +9,7 @@
  *  
  *  We load the image and read the text file (menu actions) from SD card and that's it...
  *  
+ *
  *  The text file consists of 15 lines, each containg the actual characters we need to send to the computer...
  *  Special keys: [ALT], [SHIFT], [CTRL], [SUPER], [SPACE], [TAB], [F1 - [F24]...
  *  
@@ -64,6 +65,10 @@
 #define KEY_MAX_LENGTH    20
 #define VALUE_MAX_LENGTH  128
 #define FILE_NAME "/menu0"
+#define TERMINAL "xfce4-terminal"
+#define DEBUG true
+
+void remove_special_and_writekey(String str);
 
 /*
 class LGFX : public lgfx::LGFX_Device
@@ -178,6 +183,7 @@ void setup(void)
 
 void loop(void)
 {
+   
 }
 
 /* ArduinoGetStarted.com example code Starts */
@@ -316,7 +322,7 @@ void  mainMenu()
                 Serial.printf("Text is :");
                 Serial.println(b[i].getText());
                 */
-                Serial.print("{"); Serial.print(b_list[i]); Serial.print("}");
+                //Serial.print("{"); Serial.print(b_list[i]); Serial.print("}");
                 report();
 
                 drawButton_p(b[i]);
@@ -325,7 +331,7 @@ void  mainMenu()
 
                 key_input_process(button_value, b_list[i]);
                 //page_switch(button_value);
-                delay(200);
+                delay(100);
                 //lcd.enableSleep(true);
             }
         }
@@ -455,56 +461,163 @@ void page_switch(int page)
 
 void key_input_process(int value, String str)
 {
+    if(str.startsWith("[T]", 0))
+    {
+        Keyboard.print(TERMINAL);
+        Keyboard.write(KEY_RETURN);
+        delay(100);
+        remove_special_and_writekey(str);       
+    }
+    else  
     if(str.startsWith("[LALT]", 0))
     {
-        Keyboard.write(KEY_LEFT_ALT);
-        Keyboard.print("3");
-        delay(100);
-        Keyboard.releaseAll();
-        //remove special keys
-        //Keyboard.write(keydata);
+        Keyboard.press(KEY_LEFT_ALT);
+        remove_special_and_writekey(str);
     }
     else
     if(str.startsWith("[RALT]", 0))
     {
-        Keyboard.write(KEY_RIGHT_ALT);
+        Keyboard.press(KEY_RIGHT_ALT);
+        remove_special_and_writekey(str);
     }
     else
     if(str.startsWith("[LCTRL]", 0))
     {
-        Keyboard.write(KEY_LEFT_CTRL);
+        Keyboard.press(KEY_LEFT_CTRL);
+        remove_special_and_writekey(str);
     }
     else
     if(str.startsWith("[RCTRL]", 0))
     {
-        Keyboard.write(KEY_RIGHT_CTRL);
+        Keyboard.press(KEY_RIGHT_CTRL);
+        remove_special_and_writekey(str);
     }
     else
     if(str.startsWith("[LSHIFT]", 0))
     {
-        Keyboard.write(KEY_LEFT_SHIFT);
+        Keyboard.press(KEY_LEFT_SHIFT);
+        remove_special_and_writekey(str);
     }
     else
     if(str.startsWith("[RSHIFT]", 0))
     {
-        Keyboard.write(KEY_RIGHT_SHIFT);
+        Keyboard.press(KEY_RIGHT_SHIFT);
+        remove_special_and_writekey(str);
     }
     else
     {
       Keyboard.print(str);
+      delay(100);
       Keyboard.write(KEY_RETURN);
+      delay(100);
     }
-
-    delay(100);
     Keyboard.releaseAll();
+    
     //lcd.sleepDisplay(true);
 }
 
+void remove_special_and_writekey(String str)
+{
+  char buffer[129];
+  
+  byte i, j, k, last_bracket = 0;
 
+  last_bracket = str.lastIndexOf(']');
+  
+  if(DEBUG)
+  {
+      Serial.print("\nProcessing menu line: \"");
+      Serial.print(str);
+      Serial.print("\"\n");
+    
+      Serial.print("Last bracket at position: ");
+      Serial.print(last_bracket);
+      Serial.print("\n");
+    
+      Serial.print("The string length is = ");
+      Serial.print(str.length());
+      Serial.print("\n\n");
+  }
+   
+  if(last_bracket) last_bracket++;
+
+/*
+  Serial.print("Now pos [");
+  Serial.print(last_bracket);
+  Serial.println("]");
+*/
+
+  for(i = last_bracket; i < (str.length()); i++)
+  {
+    if(DEBUG)
+    {
+      Serial.print("\n[");
+      Serial.print(i);
+      Serial.print("][");
+      Serial.print(j);
+      Serial.print("]\n");
+    }
+    
+    char c = str[i];
+    
+    if(DEBUG)
+    {
+      Serial.print("Processing str[i] / char c: [");
+      Serial.print(c); 
+      Serial.print("] Storing in: [");
+      Serial.print(j);
+      Serial.print("]");
+    }
+    
+    buffer[j] = c;
+
+    if(DEBUG)
+    {
+      Serial.print("\nProcessing buffer[j] = c :");
+      Serial.println(buffer[j]);
+    }
+    
+    j++;
+  }
+
+  buffer[j] = 0;
+
+  if(DEBUG)
+  {
+    Serial.print("\nBuffer contains: [");
+    Serial.print(buffer);
+    Serial.print("]");
+  }
+  
+  Keyboard.print(buffer);
+  delay(100);
+}
+
+
+/*
+String HELPER_ascii2String(char *ascii, int length)
+{
+  String str;
+  str.reserve(length);
+  str = "";
+
+  for (int i = 0; i < length; i++)
+  {
+    char c = *(ascii + i);
+    str += String(c);
+  }
+  return str;
+}
+*/
+
+/*
+ * Show touch position in console...
+ */
 void report()
 {
     mx = getTouchPointX();
     my = getTouchPointY();
+    Serial.print("\nTouch report:");
     Serial.print("[");
     Serial.print(mx);
     Serial.print("][");
