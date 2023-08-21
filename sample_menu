@@ -1,15 +1,15 @@
 menuitem01=freecad
-menuitem02=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad @@ %f @@
+menuitem02=[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
 menuitem03=/opt/sublime_text/sublime_text
 menuitem04=/home/Mike/Downloads/arduino-1.8.19/arduino
-menuitem05=+link to program
-menuitem06=[LALT] 3
-menuitem07=/usr/share/playonlinux/playonlinux --run 'Fireworks' %F
+menuitem05=[T]1306
+menuitem06=[LALT]3
+menuitem07=/usr/share/playonlinux/playonlinux --run 'Fireworks'
 menuitem08=firefox
 menuitem09=xfce4-terminal
 menuitem10=kcalc
 menuitem11=Back
 menuitem12=meld
 menuitem13=/home/Mike/AppImages/Stellarium.AppImage
-menuitem14=HOME
-menuitem15=ENTER
+menuitem14=[LALT]4
+menuitem15=[LCTRL][F4]
