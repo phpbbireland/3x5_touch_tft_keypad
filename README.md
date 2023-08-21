@@ -40,16 +40,18 @@ Example of menu screen with a few icons added (Kiss_MacroKey.jpg)
 Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
 **TBA:**  
-I don't currently process the menu lines for special keys, so currently, it's not quite a Macro keyboard.   
-Generating macro keyboard data is context sensitive, that is, the active program will try to implement the keystrokes, so for testing under Linux I normally open a terminal manually, the press a key...
+Currently, I only process each menu line for one special key, for example [LCTRL]c (copy), Ctrl+Shift etc., later!
+Generating macro keyboard data is context/window-focus sensitive, that is, the active program will try to implement the keystrokes, so for testing under Linux I normally open a terminal manually, the press a key. I have added the [T] special key, to open a terminal before process the rest of the menu line (some programs require launching from a terminal, but it also helps to remove undesirable affects).
+
 
 **Special keys:**  
-[LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24].  
+[LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24], [T].  
 
 **sample_menu:**  
 Each line of the menu text can contain:  
 -  A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program.  
--  Special key combinations: [ALT]+3 or [CTRL][F10] or [SHIFT][CTRL][ALT]+x.  
+-  Special key combinations: [ALT]+3 or [CTRL][F10] or [SHIFT][CTRL][ALT]+x.
+-  To open a terminal before processing a menu line use: [T]program_name_link_etc
 -  Any combination of keys up to 128 characters.  
 
 **After initial programming of the TFT board:**  
