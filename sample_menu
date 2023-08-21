@@ -11,5 +11,5 @@ menuitem10=kcalc
 menuitem11=Back
 menuitem12=meld
 menuitem13=/home/Mike/AppImages/Stellarium.AppImage
-menuitem14=[LALT]4
-menuitem15=[LCTRL][F4]
+menuitem14=[LCTRL]c
+menuitem15=[LCTRL]v
