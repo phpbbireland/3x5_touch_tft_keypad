@@ -17,10 +17,7 @@
  *    A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program
  *    Special key combinations: [ALT]{3} or [CTRL][F10] or [SHIFT][CTRL][ALT]{g}
  *    Any combination of keys up to 128 characters...
- *    Singel keys (Alt Ctrl Shift) + a character has neen added.
- *    Note Ctrl, Alt, and Shift have left and right options e.g, LALT = Left Alt etc...
- *    To process Ctrl + z (copy) for example, we would add this line to the menu0: [LCTRL]z
- *
+ *        
  *
  * Code relating to loading config data from file was created by ArduinoGetStarted.com
  *
@@ -69,74 +66,9 @@
 #define VALUE_MAX_LENGTH  128
 #define FILE_NAME "/menu0"
 #define TERMINAL "xfce4-terminal"
-#define DEBUG true
+#define DEBUG 1
 
 void remove_special_and_writekey(String str);
-
-/*
-class LGFX : public lgfx::LGFX_Device
-{
-    // lgfx::Panel_ILI9341 _panel_instance;
-    lgfx::Panel_ILI9488 _panel_instance;
-    lgfx::Bus_SPI _bus_instance;
-
-public:
-    // コンストラクタを作成し、ここで各種設定を行います。
-    // クラス名を変更した場合はコンストラクタも同じ名前を指定してください。
-    LGFX(void)
-    {
-        {                                      // バス制御の設定を行います。
-            auto cfg = _bus_instance.config(); // バス設定用の構造体を取得します。
-
-            // SPIバスの設定
-            cfg.spi_host = SPI3_HOST;  // 使用するSPIを選択  (VSPI_HOST or HSPI_HOST)
-            cfg.spi_mode = 0;          // SPI通信モードを設定 (0 ~ 3)
-            cfg.freq_write = 40000000; // 送信時のSPIクロック (最大80MHz, 80MHzを整数で割った値に丸められます)
-            cfg.freq_read = 16000000;  // 受信時のSPIクロック
-            cfg.spi_3wire = true;      // 受信をMOSIピンで行う場合はtrueを設定
-            cfg.use_lock = true;       // トランザクションロックを使用する場合はtrueを設定
-            cfg.dma_channel = 1;       // Set the DMA channel (1 or 2. 0=disable)   使用するDMAチャンネルを設定 (0=DMA不使用)
-            cfg.pin_sclk = LCD_SCK;    // SPIのSCLKピン番号を設定
-            cfg.pin_mosi = LCD_MOSI;   // SPIのMOSIピン番号を設定
-            cfg.pin_miso = LCD_MISO;   // SPIのMISOピン番号を設定 (-1 = disable)
-            cfg.pin_dc = LCD_DC;       // SPIのD/Cピン番号を設定  (-1 = disable)
-                                       // SDカードと共通のSPIバスを使う場合、MISOは省略せず必ず設定してください。
-
-            _bus_instance.config(cfg);              // 設定値をバスに反映します。
-            _panel_instance.setBus(&_bus_instance); // バスをパネルにセットします。
-        }
-
-        {                                        // 表示パネル制御の設定を行います。
-            auto cfg = _panel_instance.config(); // 表示パネル設定用の構造体を取得します。
-
-            cfg.pin_cs = LCD_CS;   // CSが接続されているピン番号   (-1 = disable)
-            cfg.pin_rst = LCD_RST; // RSTが接続されているピン番号  (-1 = disable)
-            cfg.pin_busy = -1;     // BUSYが接続されているピン番号 (-1 = disable)
-
-            // ※ 以下の設定値はパネル毎に一般的な初期値が設定されていますので、不明な項目はコメントアウトして試してみてください。
-
-            cfg.memory_width = 320;   // ドライバICがサポートしている最大の幅
-            cfg.memory_height = 480;  // ドライバICがサポートしている最大の高さ
-            cfg.panel_width = 320;    // 実際に表示可能な幅
-            cfg.panel_height = 480;   // 実際に表示可能な高さ
-            cfg.offset_x = 0;         // パネルのX方向オフセット量
-            cfg.offset_y = 0;         // パネルのY方向オフセット量
-            cfg.offset_rotation = 0;  // 回転方向の値のオフセット 0~7 (4~7は上下反転)
-            cfg.dummy_read_pixel = 8; // ピクセル読出し前のダミーリードのビット数
-            cfg.dummy_read_bits = 1;  // ピクセル以外のデータ読出し前のダミーリードのビット数
-            cfg.readable = true;      // データ読出しが可能な場合 trueに設定
-            cfg.invert = false;       // パネルの明暗が反転してしまう場合 trueに設定
-            cfg.rgb_order = false;    // パネルの赤と青が入れ替わってしまう場合 trueに設定
-            cfg.dlen_16bit = false;   // データ長を16bit単位で送信するパネルの場合 trueに設定
-            cfg.bus_shared = true;    // SDカードとバスを共有している場合 trueに設定(drawJpgFile等でバス制御を行います)
-
-            _panel_instance.config(cfg);
-        }
-
-        setPanel(&_panel_instance); // 使用するパネルをセットします。
-    }
-};
-*/
 
 LGFX lcd;
 USBHIDKeyboard Keyboard;  
@@ -151,7 +83,7 @@ String menuitem08, menuitem09,menuitem10, menuitem11,menuitem12, menuitem13, men
 void setup(void)
 {
     Serial.begin(115200);              
-    Serial.println("Keyboard begin");  
+    //Serial.println("Keyboard begin");  
     
     lcd_init();         
     lcd.setRotation(5); // rotate so USB is on top to suit my case...
@@ -186,6 +118,7 @@ void setup(void)
 
 void loop(void)
 {
+   
 }
 
 /* ArduinoGetStarted.com example code Starts */
@@ -287,27 +220,36 @@ void  mainMenu()
       menuitem15
     };
 
+    Serial.print("List of Menu Items begins... [x pos][y pos][line #]\n\n");
+    
     // Build Buttons
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
-        Serial.print("[");
-        Serial.print(b_list[i]);
-        Serial.print("] [");
+        Serial.print("X[");
         Serial.print(BUTTON_POS_X + i % 3 * 105);
-        Serial.print("][");
-        Serial.print(BUTTON_POS_Y + i / 3 * 108);
-        Serial.print("] [");
+        Serial.print("] \tY[");
+        Serial.print(BUTTON_POS_Y + i / 3 * 82 + mix);
+        Serial.print("] \tLine[");
+
+
 
         b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + mix, 103, 95, "NULL", ENABLE);
         b[i].setText(b_list[i]);
         b[i].setValue(i);
 
         Serial.print(i);
-        Serial.print("]\n");
+        Serial.print("] ");
+        
+        Serial.print(" = ");
+        Serial.print(b_list[i]);
+        Serial.print("\n");
+
+        
 
         if(i == 2 || i == 5 || i == 8 || i == 11) mix=mix+14;
         drawButton(b[i]);
     }
+    Serial.print("\nList of Menu items ends...\n");
 
     while (1)
     {
@@ -325,7 +267,7 @@ void  mainMenu()
                 Serial.println(b[i].getText());
                 */
                 //Serial.print("{"); Serial.print(b_list[i]); Serial.print("}");
-                report();
+                //report();
 
                 drawButton_p(b[i]);
                 delay(BUTTON_DELAY);
@@ -384,6 +326,7 @@ int print_img(fs::FS &fs, String filename, int x, int y)
 
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
+
     f.close();
     return 0;
 }
@@ -459,73 +402,77 @@ void page_switch(int page)
 }
 
 // needs to be more robust... later
-/*
-*  If a nenu lines includes special keys (Left or Right ALT, Left or Right CTRL etc..) we process them...
-*  Then we process the remaining key or text.. So far only single Key + Characters
-*
-*  More work needed for combinations such as ALT + Shift + Key, Ctrl Shift Key, Ctrl + Alt + ? etc..
-*  
-*/
 
 void key_input_process(int value, String str)
 {
-    // Open terminal before processing key presses / macros
-    if(str.startsWith("[T]", 0))
-    {
-        Keyboard.print(TERMINAL);
-        Keyboard.write(KEY_RETURN);
-        delay(100);
-        remove_special_and_writekey(str);       
-    }
-    else  
-    if(str.startsWith("[LALT]", 0))
-    {
-        Keyboard.press(KEY_LEFT_ALT);
-        remove_special_and_writekey(str);
-    }
-    else
-    if(str.startsWith("[RALT]", 0))
-    {
-        Keyboard.press(KEY_RIGHT_ALT);
-        remove_special_and_writekey(str);
-    }
-    else
-    if(str.startsWith("[LCTRL]", 0))
-    {
-        Keyboard.press(KEY_LEFT_CTRL);
-        remove_special_and_writekey(str);
-    }
-    else
-    if(str.startsWith("[RCTRL]", 0))
-    {
-        Keyboard.press(KEY_RIGHT_CTRL);
-        remove_special_and_writekey(str);
-    }
-    else
-    if(str.startsWith("[LSHIFT]", 0))
-    {
-        Keyboard.press(KEY_LEFT_SHIFT);
-        remove_special_and_writekey(str);
-    }
-    else
-    if(str.startsWith("[RSHIFT]", 0))
-    {
-        Keyboard.press(KEY_RIGHT_SHIFT);
-        remove_special_and_writekey(str);
-    }
-    else
-    {
-      Keyboard.print(str);
-      delay(100);
-      Keyboard.write(KEY_RETURN);
-      delay(100);
-    }
+  byte isk = 0;
+  byte len = str.length();
+  char buffer2[129];
+
+  for(int i = 0; i <= str.length(); i++)
+  {
+    buffer2[i] = str[i];
+  }
+  
+  if(DEBUG) { Serial.print("\nThe menu line = ");  Serial.print(str);  Serial.print(" (length = "); Serial.print(len); Serial.print(")\n"); }
+  
+ 
+  if(strstr(buffer2,"[LA]"))
+  {
+    Keyboard.press(KEY_LEFT_ALT); isk = 1; if(DEBUG) Serial.print("\n * Left ALT was pressed *\n");
+  }
+  if(strstr(buffer2,"[RA]"))
+  {
+    Keyboard.press(KEY_RIGHT_ALT); isk = 1; if(DEBUG) Serial.print("\n * Right ALT was pressed *\n");
+  }
+  if(strstr(buffer2,"[LC]"))
+  {
+    Keyboard.press(KEY_LEFT_CTRL); isk = 1; if(DEBUG) Serial.print("\n * Left CTRL was pressed * \n");
+  }
+  if(strstr(buffer2,"[RC]"))
+  {
+    Keyboard.press(KEY_RIGHT_CTRL); isk = 1; if(DEBUG) Serial.print("\n * Right CTRL was pressed * \n");
+  }
+  if(strstr(buffer2,"[LS]"))
+  {
+    Keyboard.press(KEY_LEFT_SHIFT); isk = 1; if(DEBUG) Serial.print("\n * Left SHIFT was pressed * \n");
+  }
+  if(strstr(buffer2,"[RS]"))
+  {
+    Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; if(DEBUG) Serial.print("\n * Right SHIFT was pressed * \n");
+  }
+
+  if(strstr(buffer2,"[T]"))
+  {
+    if(DEBUG) Serial.print("\n * Terminal launched * \n");
+    Keyboard.print(TERMINAL);
+    Keyboard.write(KEY_RETURN);
+    delay(450);
+    remove_special_and_printstr(str);
+    Keyboard.write(KEY_RETURN);
     Keyboard.releaseAll();
-    
-    //lcd.sleepDisplay(true);
+    return;
+  }
+  
+  //Serial.print(isk);
+  
+  if(isk)
+  {
+    remove_special_and_printstr(str);
+    isk = 0;
+  }
+  else  
+  {
+    if(DEBUG) { Serial.print("No special keys in string!"); }
+    Keyboard.print(str);
+    delay(100);
+    Keyboard.write(KEY_RETURN);
+  }
+
+  Keyboard.releaseAll();
 }
 
-void remove_special_and_writekey(String str)
+void remove_special_and_printstr(String str)
 {
   char buffer[129];
   
@@ -533,45 +480,15 @@ void remove_special_and_writekey(String str)
 
   last_bracket = str.lastIndexOf(']');
   
-  if(DEBUG)
-  {
-      Serial.print("\nProcessing menu line: \"");
-      Serial.print(str);
-      Serial.print("\"\n");
-    
-      Serial.print("Last bracket at position: ");
-      Serial.print(last_bracket);
-      Serial.print("\n");
-    
-      Serial.print("The string length is = ");
-      Serial.print(str.length());
-      Serial.print("\n\n");
-  }
-   
   if(last_bracket) last_bracket++;
-
-/*
-  Serial.print("Now pos [");
-  Serial.print(last_bracket);
-  Serial.println("]");
-*/
 
   for(i = last_bracket; i < (str.length()); i++)
   {
-    if(DEBUG)
-    {
-      Serial.print("\n[");
-      Serial.print(i);
-      Serial.print("][");
-      Serial.print(j);
-      Serial.print("]\n");
-    }
-    
     char c = str[i];
     
     if(DEBUG)
     {
-      Serial.print("Processing str[i] / char c: [");
+      Serial.print("\nProcessing str[i] / char c: [");
       Serial.print(c); 
       Serial.print("] Storing in: [");
       Serial.print(j);
@@ -582,8 +499,7 @@ void remove_special_and_writekey(String str)
 
     if(DEBUG)
     {
-      Serial.print("\nProcessing buffer[j] = c :");
-      Serial.println(buffer[j]);
+      Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
     }
     
     j++;
@@ -593,31 +509,14 @@ void remove_special_and_writekey(String str)
 
   if(DEBUG)
   {
-    Serial.print("\nBuffer contains: [");
+    Serial.print("\nThe Keyboard.print buffer contains: [");
     Serial.print(buffer);
-    Serial.print("]");
+    Serial.print("]\t");
   }
-  
+
   Keyboard.print(buffer);
-  delay(100);
 }
 
-
-/*
-String HELPER_ascii2String(char *ascii, int length)
-{
-  String str;
-  str.reserve(length);
-  str = "";
-
-  for (int i = 0; i < length; i++)
-  {
-    char c = *(ascii + i);
-    str += String(c);
-  }
-  return str;
-}
-*/
 
 /*
  * Show touch position in console...
@@ -631,7 +530,7 @@ void report()
     Serial.print(mx);
     Serial.print("][");
     Serial.print(my);
-    Serial.print("]\n");
+    Serial.print("]\n\n");
 }
 
 // Hardware init
@@ -643,7 +542,6 @@ void lcd_init()
     // I2C init
     Wire.begin(I2C_SDA, I2C_SCL);
     byte error, address;
-
     Wire.beginTransmission(TOUCH_I2C_ADD);
     error = Wire.endTransmission();
 
