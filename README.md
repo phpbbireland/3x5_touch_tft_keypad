@@ -33,7 +33,7 @@ menuitem15=[LC]v
 
 <br>
 <img src="/images/menu0.bmp" width=240>  
-Example of menu screen with a few icons added (Kiss_MacroKey.jpg)  
+Example of menu screen with a few icons added (/images/menu0.bmp)  
 <br><br>
 
 **Programming:**  
@@ -69,6 +69,7 @@ Optional 5x4 layout (20 key) (keysGrid480x320.bmp),
 Anything is possible with edits to the code, you could use a larger TFT too...  
 <br><br>
 
-This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together.
+This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together. I wrote a lot of C, Asm code in another life, my skills are somewhat lacking esppecially in relation to Strings, please make allowances for any poor code...
+
 Hope it's useful to someone.  
 Mike
