@@ -32,7 +32,16 @@ menuitem13=/home/Mike/AppImages/Stellarium.AppImage
 menuitem14=[LC]c
 menuitem15=[LC]v
 ```
-
+**Special keys:**  
+- [LA] = Left Alt - [RA] = Right Alt
+- [LS] = Left Shift - [RS] = Right Shift
+- [LC] = Left Ctrl - [RC] = Right Ctrl
+- [SU] = Super Key
+- [TA] = Tab (used in conjunction with Alt, Ctrl Keys)
+- [F?] = Function Keys, F1 to F24 (example [F4], [F12] etc..) ***are these needed***)
+- [T]   = Open A Terminal
+- [T]file_name will the program_name inside a terminal (see menuitem02 above).
+  
 <br>
 <img src="/images/menu0.bmp" width=240>  
 Example of menu screen with a few icons added (/images/menu0.bmp)  
@@ -42,11 +51,7 @@ Example of menu screen with a few icons added (/images/menu0.bmp)
 Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
 **TBA:**  
-Generating macro keyboard data is context/window-focus sensitive, that is, the active program will try to implement the keystrokes, so for testing under Linux I normally open a terminal manually, the press a key. I have added the [T] special key, to open a terminal before process the rest of the menu line (some programs require launching from a terminal, but it also helps to remove undesirable affects).
-
-
-**Special keys:**  
-[LALT], [RALT], [LSHIFT], [RSHIFT] [LCTRL], [RCTRL], [SUPER], [SPACE], [TAB], [F1 - F24], [T].  
+Generating macro keyboard data is context/window-focus sensitive, that is, the active program will try to implement the keystrokes, so for testing under Linux I normally open a terminal manually, the press a key. I have added the [T] special key, to open a terminal before process the rest of the menu line (some programs require launching from a terminal, but it also helps to remove undesirable affects).  
 
 **sample_menu:**  
 Each line of the menu text can contain:  
