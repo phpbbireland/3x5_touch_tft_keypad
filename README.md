@@ -56,7 +56,7 @@ Generating macro keyboard data is context/window-focus sensitive, that is, the a
 **sample_menu:**  
 Each line of the menu text can contain:  
 -  A program name (can include the path) to launch, for example: ~/{HOME}/this_path/this_program.  
--  Special key combinations: [ALT]+3 or [CTRL][F10] or [SHIFT][CTRL][ALT]+x.
+-  Special key combinations: [LA]+3 or [LC]+[F10] or [SHIFT]+[LC]+[LA]+x.
 -  To open a terminal before processing a menu line use: [T]program_name_link_etc
 -  Any combination of keys up to 128 characters.  
 
