@@ -2,9 +2,8 @@
 
 <br>
 <img src="/images/imagebuild.png" width=480>  
-FreeCAD Enclosure... [Thinyverse](https://www.thingiverse.com/thing:6145160)
-<br>
-<br>
+
+Example of finished project (stl files here) [Thinyverse](https://www.thingiverse.com/thing:6145160).  
 
 **Hardware:**
 - The project uses the Makerfabs-ESP32-S3-SPI-TFT-with-Touch board...
