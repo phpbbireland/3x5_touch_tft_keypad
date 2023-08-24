@@ -82,5 +82,7 @@ Anything is possible with edits to the code, you could use a larger TFT too...
 
 This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together. I wrote a lot of C and Assembly code in another life, my skills are somewhat lacking especially in relation to Strings, please make allowances for any poor code (it's been a very long time)...
 
+It appears to me that once you become familiar with an application, Macro Keyboards are really not required, at least, not for most basic programming tasks. But for the more complex Video/Audion editing, they still have a use. Even so, you can always repurpose this design for other applications.  
+
 Hope it's useful to someone.  
 Mike
