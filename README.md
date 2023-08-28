@@ -48,7 +48,7 @@ menuitem15=[LC]v
 - [T]file_name will the program_name inside a terminal (see menuitem02 above).
   
 <br>
-<img src="/images/menu0.bmp" width=240>  
+<img src="/images/menu0.bmp" width=360>  
 Example of menu screen with a few icons added (/images/menu0.bmp)  
 <br><br>
 
