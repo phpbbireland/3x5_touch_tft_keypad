@@ -8,7 +8,7 @@ Example of finished project (stl files here) [Thinyverse](https://www.thingivers
 **Hardware:**
 - The project uses the Makerfabs-ESP32-S3-SPI-TFT-with-Touch board...
 - A 320px240px image (.bmp) and a few icons for buttons...
-- A text file with 15 lines of text (these are the key presses/macros), see example *sample_menu* text file...
+- A text file with 15 lines of text (these are the key presses/macros), see example **sample_menu** text file...
 
 **The Basics:**  
 We start with a 480px by 320px background image, it consists of 16 button areas (identified by the red outlined squares).
@@ -18,7 +18,8 @@ Then using an image editor, edit Grid480x320.bmp file and import the desired but
 <img src="/images/blankbg.bmp" width=480>  
 blankbg.bmp  
 <br>
-Next, create a text file called *menu0* and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see *sample_menu* for example), then save the file to the SD card.  
+
+Next, create a text file called ***menu0*** and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see **sample_menu** for example), then save the file to the SD card.  
 
 ```
 menuitem01=freecad
