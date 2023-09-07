@@ -1,15 +1,15 @@
-menuitem01=freecad
-menuitem02=[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
-menuitem03=/opt/sublime_text/sublime_text
-menuitem04=/home/Mike/Downloads/arduino-1.8.19/arduino
-menuitem05=[T]ls -l
-menuitem06=[LA]3
-menuitem07=/usr/share/playonlinux/playonlinux --run 'Fireworks'
-menuitem08=firefox
-menuitem09=xfce4-terminal
-menuitem10=kcalc
-menuitem11=[RA]4
-menuitem12=meld
-menuitem13=/home/Mike/AppImages/Stellarium.AppImage
-menuitem14=[LC]c
-menuitem15=[LC]v
+01=freecad
+02=[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
+03=/opt/sublime_text/sublime_text
+04=/home/Mike/Downloads/arduino-1.8.19/arduino
+05=[T]ls -l
+06=[LA]3
+07=/usr/share/playonlinux/playonlinux --run 'Fireworks'
+08=firefox
+09=xfce4-terminal
+10=kcalc
+11=[RA]4
+12=meld
+13=/home/Mike/AppImages/Stellarium.AppImage
+14=[LC]c
+15=[LC]v
