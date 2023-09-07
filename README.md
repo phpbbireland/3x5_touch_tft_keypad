@@ -86,4 +86,6 @@ This project is very much based on sample code edited to suit. My contribution w
 It appears to me that once you become familiar with an application, Macro Keyboards are really not required, at least, not for most basic programming tasks. But for the more complex Video/Audion editing, they still have a use. Even so, you can always repurpose this design for other applications.  
 
 Hope it's useful to someone.  
+
+The ***tft_touch_keypad*** folder contains new code for multiple menus...
 Mike
