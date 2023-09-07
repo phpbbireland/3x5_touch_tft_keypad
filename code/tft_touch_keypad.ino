@@ -42,6 +42,9 @@
 int _currentMenu = 0;
 int _selectedMenu = 0;
 
+char filename[10];
+char menuname[10];
+
 void setup(void)
 {
     Serial.begin(115200);              
