@@ -1,4 +1,3 @@
-
 /*
 * A rework of the code to work with mulitple menus/screens
 *
@@ -39,13 +38,16 @@
 #define BUTTON_POS_Y 1         // button y margin
 #define BUTTON_DELAY 150
 #define BUTTONS_PER_PAGE 15
+
+
 #define KEY_MAX_LENGTH    20
 #define VALUE_MAX_LENGTH  128
 #define MAX_MENU_ITEMS    15
 
 #define HOME 14
 #define NEXT 12
-#define MAXMENUS 3
+#define MAXMENUS 4
+
 #define TERMINAL "xfce4-terminal"
 #define DEBUG 1
 
@@ -56,14 +58,17 @@ SPIClass SD_SPI;
 int mx, my = 0;
 int pos[2] = {0, 0};
 bool setbreak = false;
+
 int _currentMenu = 0;
 int _selectedMenu = 0;
 int _currentLine = 0;
+
 int firstrun = true;
 bool breakout = false;
 
 char _filename[12];
 char _menuname[12];
+
 
 String b_list[BUTTONS_PER_PAGE] = { "", "", "", "", "","", "", "", "", "", "", "", "", "", "" };
 
@@ -78,7 +83,7 @@ void setup(void)
     Keyboard.begin();  
     USB.begin();       
     print_img(SD, "/logo.bmp", 480, 320);  // Load and display the Background Image 
-    delay(3000);
+    delay(2000);
     setFileNames(0); // begin with main menu...
 }
 
@@ -86,6 +91,17 @@ void loop(void) { }
 
 void setFileNames(int _selectedMenu)
 {
+    Serial.print("\n\nsel = [");Serial.print(_selectedMenu);Serial.print("]");Serial.print("] cur = [");Serial.print(_currentMenu);Serial.print("]\n");    
+
+    if(firstrun)
+    {
+      ;
+    }
+    else if(_currentMenu == _selectedMenu)
+    {
+      return;
+    }
+
     switch(_selectedMenu) // could just use _menuname and append ext...
     {
         case 0: { strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
@@ -93,6 +109,7 @@ void setFileNames(int _selectedMenu)
         case 2: { strcpy(_filename, "/menu2.bmp"); strcpy(_menuname, "/menu2"); } break;
         case 3: { strcpy(_filename, "/menu3.bmp"); strcpy(_menuname, "/menu3"); } break;
         case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
+        case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;        
         default:{ strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
     }
     displayMenu();
@@ -103,7 +120,7 @@ void displayMenu()
 {
     lcd.setRotation(5);                   // fix for touch not rotating
     print_img(SD, _filename, 480, 320);   // Load and display the Background Image / Menu
-    delay(100);  
+    ///delay(100);  
     lcd.setRotation(0);                   // reset rotation
 }
 
@@ -112,9 +129,9 @@ void  processMenu()
     char str[80];
     int nmx, nmy;
     int  mix = 0;
-
+    
     lcd.setRotation(0);
-
+    
     if(_currentMenu != _selectedMenu || firstrun)
     {
         //for (int i = 0; i < 14; i++) { b_list[i] = ""; }
@@ -152,7 +169,7 @@ void  processMenu()
         if(i == 2 || i == 5 || i == 8 || i == 11) mix=mix+14;
         drawButton(b[i]);
     }
-    if(DEBUG) Serial.print("\nList of Menu items ends...\n");
+    //if(DEBUG) Serial.print("\nList of Menu items ends...\n");
 
 //    ft6236_pos(pos);
 //    mx = getTouchPointX();
@@ -179,6 +196,7 @@ printStack(0); // tracking stack as it will after several processes crash...
                 processMenuLine(b_list[i]);
                 delay(100);
             }
+
             //mx = getTouchPointX();
             //my = getTouchPointY();
         }
@@ -236,6 +254,7 @@ void drawButton(Button b)
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
+
     lcd.drawRect(b_x, b_y, b_w, b_h, COLOR_LINE);
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setCursor(b_x + 2, b_y + b_w / 2 + 2);
@@ -253,7 +272,9 @@ void drawButton_p(Button b)
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
+
     lcd.drawRect(b_x, b_y, b_w, b_h, TFT_WHITE);
+
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setTextColor(COLOR_TEXT);
     lcd.setTextSize(textSize);
@@ -299,28 +320,20 @@ String HELPER_ascii2String(char *ascii, int length)
 /* ArduinoGetStarted.com example code Ends */
 int SD_findKey(const __FlashStringHelper * key, char * value)
 {
-  char filename[10];
-
-  if(_selectedMenu == 0)
-  {
-    strcpy(filename, "/menu0");
-  }
-  else if(_selectedMenu == 1)
-  {
-    strcpy(filename, "/menu1");
-  }
-  else if(_selectedMenu == 2)
-  {
-    strcpy(filename, "/menu2");
-  }
+  /* why is it called for each menu line, could we not read all lines in one go? perhaps later...
+  *  We have 15 lines (buttons), each having a token of [##],
+  *  token[15][##] and loop through...
+  */
+  
+  //Serial.print("Opening: "); Serial.print(_menuname); Serial.print("\n\n");
 
   //File configFile = SD.open(FILE_NAME);
-  File configFile = SD.open(filename);
+  File configFile = SD.open(_menuname);
 
   if (!configFile)
   {
     Serial.print(F("SD Card: error on opening file "));
-    Serial.println(filename);
+    Serial.println(_menuname);
     return 0;
   }
 
@@ -358,6 +371,7 @@ int SD_findKey(const __FlashStringHelper * key, char * value)
       }
     }
   }
+
   configFile.close();  // close the file
   return value_length;
 }
@@ -374,6 +388,7 @@ String SD_findString(const __FlashStringHelper * key)
 // Display image from file
 int print_img(fs::FS &fs, String filename, int x, int y)
 {
+
     File f = fs.open(filename, "r");
     if (!f)
     {
@@ -393,6 +408,7 @@ int print_img(fs::FS &fs, String filename, int x, int y)
 
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
+
     f.close();
     return 0;
 }
@@ -435,17 +451,19 @@ void processMenuLine(String str)
     {
         Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; if(DEBUG) Serial.print("\n * Right SHIFT was pressed * \n");
     }
+
     if (strstr(buffer2, "[T]"))
     {
         if (DEBUG) Serial.print("\n * Terminal launched * \n");
         Keyboard.print(TERMINAL);
         Keyboard.write(KEY_RETURN);
-        delay(450);
+        delay(350);
         remove_special_and_printstr(str);
         Keyboard.write(KEY_RETURN);
         Keyboard.releaseAll();
         return;
     }
+
     if (isk)
     {
         remove_special_and_printstr(str);
@@ -458,43 +476,53 @@ void processMenuLine(String str)
         delay(100);
         Keyboard.write(KEY_RETURN);
     }
+
     Keyboard.releaseAll();
 
+    /* Process for the selected menu 
+     *  
+     */
+     
     if (strstr(buffer2, "[HOME]"))
     {
-        _currentMenu = _selectedMenu = 0; 
+        _currentMenu = _selectedMenu = 0; // reset current, selected menu
+        firstrun = true;
     }
     else if (strstr(buffer2, "[NEXT]"))
     {
-      if(_selectedMenu < 2)
+      if(_selectedMenu < MAXMENUS)
       {
-          _selectedMenu++; Serial.print("Switch _currentMenu: ");
+          _currentMenu = _selectedMenu; _selectedMenu++; // update current, selected menu
+          //Serial.print("Switch _currentMenu: ");
       }
     }
     else if (strstr(buffer2, "[PREV]"))
     {
       if(_selectedMenu > 0)
       {
-          _selectedMenu--; Serial.print("Switch _currentMenu: ");
+          _currentMenu = _selectedMenu; _selectedMenu--;  // update current, selected menu
+          //Serial.print("Switch _currentMenu: ");
       }
     }
     page_switch(_selectedMenu);
-    _currentMenu = _selectedMenu;
 }
 
 void remove_special_and_printstr(String str)
 {
     char buffer[129];
+
     int i = 0;
     int j = 0;
     int last_bracket = 0;
 
     last_bracket = str.lastIndexOf(']');
+
     if (last_bracket) last_bracket++;
 
     for (i = last_bracket; i < (str.length()); i++)
     {
         char c = str[i];
+
         if (DEBUG)
         {
             Serial.print("\nProcessing str[i] / char c: [");
@@ -503,14 +531,19 @@ void remove_special_and_printstr(String str)
             Serial.print(j);
             Serial.print("]");
         }
+
         buffer[j] = c;
+
         if (DEBUG) { Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")"); }
 
         j++;
     }
+
     buffer[j] = 0;
+
     if (DEBUG) { Serial.print("\nThe Keyboard.print buffer contains: ["); Serial.print(buffer); Serial.print("]\t");
     }
+
     Keyboard.print(buffer);
 }
 
