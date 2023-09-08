@@ -87,5 +87,9 @@ It appears to me that once you become familiar with an application, Macro Keyboa
 
 Hope it's useful to someone.  
 
-The ***tft_touch_keypad*** folder contains new code for multiple menus...
+***Some updates:***  
+When dealing with multiple menus I did have an issues with stack being used up after many processes through the code, resulting in the device resetting. I have not determined the problem but if anyone has an ideas, please comment.
+If (when) the issue with the stack has been resolved, this could be a very useful project...  
+
+The ***tft_touch_keypad*** folder contains new code for multiple menus...  
 Mike
