@@ -317,7 +317,8 @@ String HELPER_ascii2String(char *ascii, int length)
   return str;
 }
 
-/* ArduinoGetStarted.com example code Ends */
+/* ArduinoGetStarted.com example code */
+
 int SD_findKey(const __FlashStringHelper * key, char * value)
 {
   /* why is it called for each menu line, could we not read all lines in one go? perhaps later...
@@ -382,7 +383,8 @@ String SD_findString(const __FlashStringHelper * key)
   int value_length = SD_findKey(key, value_string);
   return HELPER_ascii2String(value_string, value_length);
 }
-/* ArduinoGetStarted.com example code Starts */
+
+/* ArduinoGetStarted.com example code */
 
 
 // Display image from file
