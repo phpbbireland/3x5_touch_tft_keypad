@@ -91,8 +91,9 @@ void loop(void) { }
 
 void setFileNames(int _selectedMenu)
 {
-    Serial.print("\n\nsel = [");Serial.print(_selectedMenu);Serial.print("]");Serial.print("] cur = [");Serial.print(_currentMenu);Serial.print("]\n");    
+    if(DEBUG) Serial.print("\n\nsel = [");Serial.print(_selectedMenu);Serial.print("]");Serial.print("] cur = [");Serial.print(_currentMenu);Serial.print("]\n");    
 
+    // only update for new menu and initial program start...
     if(firstrun)
     {
       ;
@@ -101,8 +102,7 @@ void setFileNames(int _selectedMenu)
     {
       return;
     }
-
-    switch(_selectedMenu) // could just use _menuname and append ext...
+    switch(_selectedMenu)
     {
         case 0: { strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
         case 1: { strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
