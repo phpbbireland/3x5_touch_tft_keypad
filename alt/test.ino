@@ -134,31 +134,6 @@ void  processMenu()
     int adj = 0;
     processMenuFile();
 
-/*  
-    if(_currentMenu != _selectedMenu || _firstrun)
-    {
-        b_list[0]  = SD_findString(F("01"));
-        b_list[1]  = SD_findString(F("02"));
-        b_list[2]  = SD_findString(F("03"));
-        b_list[3]  = SD_findString(F("04"));
-        b_list[4]  = SD_findString(F("05"));
-        b_list[5]  = SD_findString(F("06"));
-        b_list[6]  = SD_findString(F("07"));
-        b_list[7]  = SD_findString(F("08"));
-        b_list[8]  = SD_findString(F("09"));
-        b_list[9]  = SD_findString(F("10"));
-        b_list[10] = SD_findString(F("11"));
-        b_list[11] = SD_findString(F("12"));
-        b_list[12] = SD_findString(F("13"));
-        b_list[13] = SD_findString(F("14"));
-        b_list[14] = SD_findString(F("15"));
-        _firstrun = false;
-    }
-*/
-
-
-    //if(DEBUG) { Serial.print("List of Menu Items begins... [x pos][y pos][line #]\n\n"); }
-    
     // Build Buttons
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
@@ -201,7 +176,6 @@ printStack(); // tracking stack as it will after several processes crash...
                 processMenuLine(b_list[i]);
                 delay(100);
             }
-
             //_mx = getTouchPointX();
             //_my = getTouchPointY();
         }
@@ -559,7 +533,7 @@ void processMenuFile(void)
     int charcount = 0;
     int llcount = 0;
     char chr;
-    
+
     File myfile = SD.open(_menuname);
     
     if (myfile) 
