@@ -1,6 +1,6 @@
 /*
 * A rework of the code.ino to work with multiple menus/screens
-* Last tested: 09/09/23, it compiles!
+* Last tested: 09/09/23, 7:50 it compiles!
 * Last Edits:   Changed some var name for better readability..
 * Reboot after 18 processes? Running out of stack...
 */
@@ -44,10 +44,12 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-
-#define HOME 14
-#define NEXT 12
-#define MAXMENUS 4
+/*
+#define HOME 14           // Button load menu0
+#define NEXT 12           // Button load next menu
+#define PREV 13           // Button load previous menu
+*/
+#define MAXMENUS 3        // Current max menus - 1 (we start with 0)
 
 #define TERMINAL "xfce4-terminal" // default terminal
 #define DEBUG 1
@@ -56,7 +58,9 @@ LGFX lcd;
 USBHIDKeyboard Keyboard;
 SPIClass SD_SPI;
 
+static uint32_t stackori = 0;
 static uint32_t stacktot = 0;
+static uint32_t stackrun = 0;
 
 int _mx, _my = 0;       // global vars start with underscore _
 int _pos[2] = {0, 0};   // 
@@ -67,7 +71,6 @@ int _firstrun = true;   // flag to indicate program firt run
 
 char _filename[12] = "/menu0.bmp";  //set to default menu
 char _menuname[12] = "/menu0";      //set to default macro file
-
 
 String b_list[BUTTONS_PER_PAGE] = { "", "", "", "", "","", "", "", "", "", "", "", "", "", "" };
 
@@ -107,8 +110,8 @@ void setFileNames(int _selectedMenu)
         case 1: { strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
         case 2: { strcpy(_filename, "/menu2.bmp"); strcpy(_menuname, "/menu2"); } break;
         case 3: { strcpy(_filename, "/menu3.bmp"); strcpy(_menuname, "/menu3"); } break;
-        case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
-        case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;        
+        //case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
+        //case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;        
         default:{ strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
     }
 
@@ -543,16 +546,19 @@ void remove_special_and_printstr(String str)
     Keyboard.print(buffer);
 }
 
-// found on esp32,com ... very useful...
+// found on esp32,com ... para ...very useful...
 void printStack(int i)
 {
   static int count = i;
+  
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
   UBaseType_t watermarkStart = uxTaskGetStackHighWaterMark(NULL);
   char *StackPtrEnd = StackPtrAtStart - watermarkStart;
-  if(stacktot == 0) { stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
-  Serial.printf("\nFree Stack near start is:  %d, ", (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
-  Serial.printf("used this loop = %d, loop count = [%d]\r\n", (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), count++);
-  stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;
+  
+  if(stacktot == 0) { stackori = stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
+  stackrun += (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
+  Serial.printf("\nFree Stack near originally: %d, now: %d, ", stackori, (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
+  Serial.printf("used this loop[%d] = %d, Stack used, running total = %d \r\n", count++, (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), stackrun);
+  stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;  
 }
