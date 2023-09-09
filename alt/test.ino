@@ -542,12 +542,12 @@ void processMenuFile(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
-    
+
         if(chr == '\n')
         {
             buf[charcount-1] = '\n';
             b_list[llcount] = buf;
-            
+
             for(int x = 0; x < charcount; x++) buf[x] = 0;
             llcount++;
             charcount = 0;
@@ -557,6 +557,6 @@ void processMenuFile(void)
     }  
     else
     {
-      Serial.println("error opening the text file");
+      Serial.printf("Error opening %s menu file", _menuname);
     }
 }
