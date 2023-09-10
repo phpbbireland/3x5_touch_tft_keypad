@@ -1,6 +1,7 @@
 /*
-* Alternative code rework to try fix stack runout
-* Last tested: 10/09/23, 10:50 it compiles!
+* A rework of the code.ino to work with multiple menus/screens
+* Last tested: 09/09/23, 7:50 it compiles!
+* Last Edits:   Changed some var name for better readability..
 * Reboot after 18 processes? Running out of stack...
 */
 
@@ -51,7 +52,7 @@
 #define MAXMENUS 3        // Current max menus - 1 (we start with 0)
 
 #define TERMINAL "xfce4-terminal" // default terminal
-#define DEBUG 1
+#define DEBUG 0
 
 LGFX lcd;
 USBHIDKeyboard Keyboard;
@@ -85,8 +86,8 @@ void setup(void)
     sd_init();
     Keyboard.begin();  
     USB.begin();       
-    print_img(SD, "/logo.bmp", 480, 320);  // Load and display the Background Image 
-    delay(2000);
+    ///print_img(SD, "/logo.bmp", 480, 320);  // Load and display the Background Image 
+    ///delay(2000);
     setFileNames(0); // begin with main menu...
 }
 
@@ -134,6 +135,8 @@ void  processMenu()
     int adj = 0;
     processMenuFile();
 
+    //if(DEBUG) { Serial.print("List of Menu Items begins... [x pos][y pos][line #]\n\n"); }
+    
     // Build Buttons
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
@@ -155,7 +158,7 @@ void  processMenu()
 //    _mx = getTouchPointX();
 //    _my = getTouchPointY();
     
-printStack(); // tracking stack as it will after several processes crash...
+//printStack(); // tracking stack as it will after several processes crash...
     
     //while (getTouchPointX() == _mx && getTouchPointY() == _my) // used to jump out of loop, works but is it needed?
     while(1)
@@ -374,7 +377,7 @@ String HELPER_ascii2String(char *ascii, int length)
 // Display menu image from file
 int print_img(fs::FS &fs, String filename, int x, int y)
 {
-
+printStack(2);
     File f = fs.open(filename, "r");
     if (!f)
     {
@@ -394,14 +397,15 @@ int print_img(fs::FS &fs, String filename, int x, int y)
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
     f.close();
-    return 0;
+printStack(3);
+    return 1;
 }
 
 void processMenuLine(String str)
 {
     byte isk = 0;
     byte len = str.length();
-
+//printStack(0);
     static char buffer2[MACRO_MAX_LENGTH+1];
 
     for (int i = 0; i <= str.length(); i++)
@@ -483,7 +487,7 @@ void processMenuLine(String str)
 
 void keyboard_print_macro(String str) // print menu line/macro after removing token...
 {
-    char buffer[129];
+    char buffer[129] = "";
 
     int i = 0;
     int j = 0;
@@ -512,7 +516,7 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
 
 
 // found on esp32,com ... para ...very useful...
-void printStack(void)
+void printStack(int i)
 {
   static int count = 0;
   
@@ -524,7 +528,7 @@ void printStack(void)
   if(stacktot == 0) { stackori = stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
   stackrun += (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
   Serial.printf("\nFree Stack near originally: %d, now: %d, ", stackori, (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
-  Serial.printf("used this loop[%d] = %d, Stack used, running total = %d \r\n", count++, (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), stackrun);
+  Serial.printf("used this loop[%d] = %d, Stack used, running total = %d (%d)\r\n", count++, (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), stackrun, i);
   stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;  
 }
 
@@ -533,7 +537,7 @@ void processMenuFile(void)
     int charcount = 0;
     int llcount = 0;
     char chr;
-
+    
     File myfile = SD.open(_menuname);
     
     if (myfile) 
@@ -542,12 +546,12 @@ void processMenuFile(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
-
+    
         if(chr == '\n')
         {
             buf[charcount-1] = '\n';
             b_list[llcount] = buf;
-
+            
             for(int x = 0; x < charcount; x++) buf[x] = 0;
             llcount++;
             charcount = 0;
