@@ -1,9 +1,13 @@
 /*
 * A rework of the code.ino to work with multiple menus/screens
 * Last tested: 11/09/23, 10:08 it compiles!
-* Last Edits:   Changed some var name for better readability..
-*               Removed code for finging specific text on SD Card (not required)...
-* Reboot after 18 processes? Running out of stack...
+* Recent Edits:
+* Changed some var name for better readability..
+* Removed code for finging specific text/key on SD Card (not required)...
+* Menu/Macro text now only contains the exact macro text, (menu0, 1, 2 etc.), do not require leading 01=, 02=, etc... )
+* 
+* I use DEBUG1/2 to examing vars, will be removed in time...
+* Still Reboots after 18 processes (Running out of stack)?
 */
 
 #define LGFX_USE_V1
