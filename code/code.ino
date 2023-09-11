@@ -24,6 +24,8 @@
  * This example code is in the public domain
  *
  * Tutorial page: https://arduinogetstarted.com/tutorials/arduino-read-config-from-sd-card
+ *
+ * Most code from public domain, the remaining code © Michael O'Toole 2023
  */
  
 #define LGFX_USE_V1
