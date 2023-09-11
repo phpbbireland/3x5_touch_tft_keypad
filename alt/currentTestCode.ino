@@ -119,7 +119,7 @@ void setFileNames(int _selectedMenu)
     }
 
     lcd.setRotation(5);                   // fix for touch not rotating
-    print_img(SD, _filename, 480, 320);   // Load and display the Background Image / Menu
+    print_img(SD, _filename, 480, 320);   // Load and display the Background Image / Menu from SD
     delay(100);  
     lcd.setRotation(0);                   // reset rotation
     processMenu();
@@ -194,7 +194,7 @@ void processMenuLine(String str)
 
     if (strstr(buffer2, "[HOME]"))
     {
-      _currentMenu = _selectedMenu = 0; // reset current, selected menu
+      _currentMenu = _selectedMenu = 0;
       _menuchanged = true;
     }
     else if (strstr(buffer2, "[NEXT]"))
@@ -223,7 +223,7 @@ void processMenuLine(String str)
 void  processMenu()
 {
     char str[80];
-    int adj = 0;
+    int adj = 0;        // adjust for column count
     
     processMenuFile();
 
@@ -245,14 +245,9 @@ void  processMenu()
     }
 
     if(DEBUG1) Serial.print("\nList of Menu items ends...\n");
+    
+    ///printStack("processing macros & macros"); // tracking stack as it will after several processes crash...
 
-//    ft6236_pos(pos);
-//    _mx = getTouchPointX();
-//    _my = getTouchPointY();
-    
-///printStack("processing macros & macros"); // tracking stack as it will after several processes crash...
-    
-    //while (getTouchPointX() == _mx && getTouchPointY() == _my) // used to jump out of loop, works but is it needed?
     while(1)
     {
         ft6236_pos(_pos);
@@ -296,14 +291,12 @@ void lcd_init()
 {
     lcd.init();
     lcd.fillScreen(COLOR_BACKGROUND);
-    
     Wire.begin(I2C_SDA, I2C_SCL);            // I2C init
     byte error;
-
     Wire.beginTransmission(TOUCH_I2C_ADD);
     error = Wire.endTransmission();
 
-    if (error == 0)
+    if (error == 0) 
     {
       if(DEBUG1) { Serial.print("I2C device found at address 0x"); Serial.print(TOUCH_I2C_ADD, HEX); Serial.println("  !\n"); }
     }
@@ -350,16 +343,6 @@ void drawButton_p(Button b)
     lcd.setTextSize(textSize);
 }
 
-void clean_button()
-{
-    lcd.fillRect(BUTTON_POS_X, BUTTON_POS_Y, 319 - BUTTON_POS_X, 479 - BUTTON_POS_Y, COLOR_BACKGROUND);
-}
-
-void clean_screen()
-{
-    lcd.fillRect(0, 0, 319, 479, COLOR_BACKGROUND);
-}
-
 void sd_init()
 {
     SD_SPI.begin(SD_SCK, SD_MISO, SD_MOSI);
@@ -376,7 +359,7 @@ void sd_init()
 // Load/Display menu image from file
 int print_img(fs::FS &fs, String filename, int x, int y)
 {
-///printStack("Pre print_img");
+    ///printStack("Pre print_img");
     File f = fs.open(filename, "r");
     if (!f)
     {
@@ -395,7 +378,7 @@ int print_img(fs::FS &fs, String filename, int x, int y)
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
     f.close();
-///printStack("Post print_img");
+    ///printStack("Post print_img");
     return 1;
 }
 
@@ -412,15 +395,16 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
     for (i = last_bracket; i < (str.length()); i++)
     {
         char c = str[i];
-        Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("]");
+        if(DEBUG1) { Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("]"); }
         buffer[j] = c;
-        Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
+        if(DEBUG1) Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")"); }
         j++;
     }
     buffer[j] = 0;
-    Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
+    if(DEBUG1) Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
     Keyboard.print(buffer);
 }
+
 // found on esp32,com ... para ...very useful...
 void printStack(char *mytxt)
 {
@@ -452,10 +436,10 @@ void processMenuFile(void)
         buf[charcount++] = chr;
         if(chr == '\n')
         {
-            buf[charcount] = '\n\r';
+            buf[charcount] = '\n\r'; //???//
             b_list[llcount] = buf;
             
-            for(int x = 0; x < charcount; x++) buf[x] = 0;
+            for(int x = 0; x < charcount; x++) buf[x] = 0; // Stop strange behavior
             llcount++;
             charcount = 0;
          }
@@ -466,5 +450,4 @@ void processMenuFile(void)
     {
       Serial.printf("Error opening %s menu file", _menuname);
     }
-    //_firstrun = false; // prevent tft/macro file update untill menu changes
 }
