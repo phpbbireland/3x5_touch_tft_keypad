@@ -95,4 +95,6 @@ The ***tft_touch_keypad*** folder contains new code for multiple menus...
 
 The ***alt*** [folder](alt/currentTestCode.ino) containg current code used during my latest tests. I has removed unnecessary code. If anyone wants to help find Stack issue, check out this code...
 
+Note, Some code is in the public domain (example code), remaining code © Michael O'Toole 2023  
+
 Mike
