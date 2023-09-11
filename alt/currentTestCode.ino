@@ -8,6 +8,7 @@
 * 
 * I use DEBUG1/2 to examing vars, will be removed in time...
 * Still Reboots after 18 processes (Running out of stack)?
+* Some code is in the public domain (example code), remaining code © Michael O'Toole 2023
 */
 
 #define LGFX_USE_V1
