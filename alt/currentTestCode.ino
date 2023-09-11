@@ -1,7 +1,8 @@
 /*
 * A rework of the code.ino to work with multiple menus/screens
-* Last tested: 09/09/23, 7:50 it compiles!
+* Last tested: 11/09/23, 10:08 it compiles!
 * Last Edits:   Changed some var name for better readability..
+*               Removed code for finging specific text on SD Card (not required)...
 * Reboot after 18 processes? Running out of stack...
 */
 
@@ -44,14 +45,9 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-/*
-#define HOME 14           // Button load menu0
-#define NEXT 12           // Button load next menu
-#define PREV 13           // Button load previous menu
-*/
-#define MAXMENUS 3        // Current max menus - 1 (we start with 0)
+#define MAXMENUS 3                    // Current max menus - 1 (we start with 0)
 
-#define TERMINAL "xfce4-terminal" // default terminal
+#define TERMINAL "xfce4-terminal"     // default terminal
 #define DEBUG1 1
 #define DEBUG2 0
 
@@ -181,7 +177,7 @@ void processMenuLine(String str)
         return;
     }
 
-    if (isk)
+    if (isk)    // if special key
     {
         keyboard_print_macro(str);
         isk = 0;
@@ -281,7 +277,6 @@ void  processMenu()
     }
     //printStack("processing...");
     loopcount = 0;
-    
 }
 
 void report()
@@ -301,9 +296,8 @@ void lcd_init()
 {
     lcd.init();
     lcd.fillScreen(COLOR_BACKGROUND);
-
-    // I2C init
-    Wire.begin(I2C_SDA, I2C_SCL);
+    
+    Wire.begin(I2C_SDA, I2C_SCL);            // I2C init
     byte error;
 
     Wire.beginTransmission(TOUCH_I2C_ADD);
@@ -311,12 +305,7 @@ void lcd_init()
 
     if (error == 0)
     {
-      if(DEBUG1)
-      {
-        Serial.print("I2C device found at address 0x");
-        Serial.print(TOUCH_I2C_ADD, HEX);
-        Serial.println("  !\n");
-      }
+      if(DEBUG1) { Serial.print("I2C device found at address 0x"); Serial.print(TOUCH_I2C_ADD, HEX); Serial.println("  !\n"); }
     }
     else
     {
@@ -384,7 +373,7 @@ void sd_init()
     }
 }
 
-// Display menu image from file
+// Load/Display menu image from file
 int print_img(fs::FS &fs, String filename, int x, int y)
 {
 ///printStack("Pre print_img");
@@ -395,7 +384,6 @@ int print_img(fs::FS &fs, String filename, int x, int y)
         f.close();
         return 0;
     }
-
     f.seek(54);
     int X = x;
     int Y = y;
@@ -411,17 +399,14 @@ int print_img(fs::FS &fs, String filename, int x, int y)
     return 1;
 }
 
-
 void keyboard_print_macro(String str) // print menu line/macro after removing token...
 {
     char buffer[129] = "";
-
     int i = 0;
     int j = 0;
     int last_bracket = 0;
 
     last_bracket = str.lastIndexOf(']');
-
     if (last_bracket) last_bracket++;
 
     for (i = last_bracket; i < (str.length()); i++)
@@ -432,33 +417,22 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
         Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
         j++;
     }
-
     buffer[j] = 0;
-    
     Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
-
     Keyboard.print(buffer);
 }
-
-
-
 // found on esp32,com ... para ...very useful...
 void printStack(char *mytxt)
 {
-
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
   
   UBaseType_t watermarkStart = uxTaskGetStackHighWaterMark(NULL);
-  
   char *StackPtrEnd = StackPtrAtStart - watermarkStart;
-  
   if(stacktot == 0) { stackori = stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
   stackrun += (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
-  
   Serial.printf("Free Stack near previous: %d, now: %d,", stackori, (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
   Serial.printf(" this loop [%d] used: %4d, total stack used:%4d (%s)\r\n", loopcount++, (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), stackrun, mytxt);
-  
   stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;
 }
 
@@ -476,7 +450,6 @@ void processMenuFile(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
-    
         if(chr == '\n')
         {
             buf[charcount] = '\n\r';
