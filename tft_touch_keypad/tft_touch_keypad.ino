@@ -3,6 +3,8 @@
 * Last tested: 09/09/23, 7:50 it compiles!
 * Last Edits:   Changed some var name for better readability..
 * Reboot after 18 processes? Running out of stack...
+*
+* Somr code from from public domain (i.e. example code), remaining code © Michael O'Toole 2023
 */
 
 #define LGFX_USE_V1
