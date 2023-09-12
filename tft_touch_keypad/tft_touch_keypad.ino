@@ -441,7 +441,11 @@ void processMenuLine(String str)
     {
         buffer2[i] = str[i];
     }
-
+    
+    if (strstr(buffer2, "[LA]"))
+    {
+        Keyboard.press(KEY_LEFT_ALT); isk = 1; if(DEBUG1) Serial.print("\n * Left ALT was pressed *\n");
+    }
     if (DEBUG) { Serial.print("\nThe menu line = ");  Serial.print(str);  Serial.print(" (length = "); Serial.print(len); Serial.print(") "); }
 
     if (strstr(buffer2, "[RA]"))
