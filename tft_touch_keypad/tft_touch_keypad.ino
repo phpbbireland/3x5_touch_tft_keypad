@@ -203,13 +203,34 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         buffer2[i] = str[i]; 
     }
     ///Serial.printf("\nThe menu line is: \"%s\" (%d characters) ... " , buffer2, len);
+
+    // Special ref USBHID.h
     if (strstr(buffer2, "[LA]")) { Keyboard.press(KEY_LEFT_ALT); isk = 1; }
     if (strstr(buffer2, "[RA]")) { Keyboard.press(KEY_RIGHT_ALT); isk = 1; }
     if (strstr(buffer2, "[LC]")) { Keyboard.press(KEY_LEFT_CTRL); isk = 1; }
     if (strstr(buffer2, "[RC]")) { Keyboard.press(KEY_RIGHT_CTRL); isk = 1; }
     if (strstr(buffer2, "[LS]")) { Keyboard.press(KEY_LEFT_SHIFT); isk = 1; }
     if (strstr(buffer2, "[RS]")) { Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; }
-
+    if (strstr(buffer2, "[TA]")) { Keyboard.press(KEY_TAB); isk = 1; }    
+    // Media
+    if (strstr(buffer2, "[MU]")) { Keyboard.press(MUTE); isk = 1; }
+    if (strstr(buffer2, "[VU]")) { Keyboard.press(VOLUME_UP); isk = 1; }    
+    if (strstr(buffer2, "[VD]")) { Keyboard.press(VOLUME_DOWN); isk = 1; }
+    if (strstr(buffer2, "[PP]")) { Keyboard.press(PLAY_OR_PAUSE); isk = 1; }
+    // Function
+    if (strstr(buffer2, "[F1]")) { Keyboard.press(KEY_F1); isk = 1; }
+    if (strstr(buffer2, "[F2]")) { Keyboard.press(KEY_F2); isk = 1; }
+    if (strstr(buffer2, "[F3]")) { Keyboard.press(KEY_F3); isk = 1; }
+    if (strstr(buffer2, "[F4]")) { Keyboard.press(KEY_F4); isk = 1; }
+    if (strstr(buffer2, "[F5]")) { Keyboard.press(KEY_F5); isk = 1; }
+    if (strstr(buffer2, "[F6]")) { Keyboard.press(KEY_F6); isk = 1; }
+    if (strstr(buffer2, "[F7]")) { Keyboard.press(KEY_F7); isk = 1; }
+    if (strstr(buffer2, "[F8]")) { Keyboard.press(KEY_F8); isk = 1; }
+    if (strstr(buffer2, "[F9]")) { Keyboard.press(KEY_F9); isk = 1; }
+    if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); isk = 1; }
+    if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); isk = 1; }
+    if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); isk = 1; }
+    // Terminal
     if (strstr(buffer2, "[T]"))
     {
         Keyboard.print(TERMINAL);
@@ -338,7 +359,7 @@ void drawButton(Button b)
     lcd.setTextSize(textSize);
 }
 
-void drawButton_p(Button b)
+void drawButton_p(Button b) // highlight on touch
 {
     int b_x;
     int b_y;
