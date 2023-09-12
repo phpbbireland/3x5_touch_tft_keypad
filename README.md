@@ -22,21 +22,21 @@ blankbg.bmp
 Next, create a text file called ***menu0*** and add 15 lines of text (each consisting of what we would need to type to execute the given programs, see **sample_menu** for example), then save the file to the SD card.  
 
 ```
-01=freecad
-02=[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
-03=/opt/sublime_text/sublime_text
-04=/home/Mike/Downloads/arduino-1.8.19/arduino
-05=[T]ls -l
-06=[LA]3
-07=/usr/share/playonlinux/playonlinux --run 'Fireworks'
-08=firefox
-09=xfce4-terminal
-10=kcalc
-11=[RA]4
-12=meld
-13=/home/Mike/AppImages/Stellarium.AppImage
-14=[LC]c
-15=[LC]v
+freecad
+[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
+/opt/sublime_text/sublime_text
+/home/Mike/Downloads/arduino-1.8.19/arduino
+[T]ls -l
+[LA]3
+/usr/share/playonlinux/playonlinux --run 'Fireworks'
+firefox
+xfce4-terminal
+kcalc
+[RA]4
+meld
+/home/Mike/AppImages/Stellarium.AppImage
+[LC]c
+[LC]v
 ```
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
@@ -93,7 +93,7 @@ If (when) the issue with the stack has been resolved, this could be a very usefu
 
 The ***tft_touch_keypad*** folder contains new code for multiple menus...  
 
-The ***alt*** [folder](alt/currentTestCode.ino) containg current code used during my latest tests. I has removed unnecessary code. If anyone wants to help find Stack issue, check out this code...
+The ***alt*** [folder](alt/currentTestCode.ino) containg current code used during my latest tests. I has removed unnecessary code. Stack issue fixed (thanks to MicroController over at ESP32 forums).  
 
 Note, Some code is in the public domain (example code), remaining code © Michael O'Toole 2023  
 
