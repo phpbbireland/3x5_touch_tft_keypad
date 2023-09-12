@@ -89,11 +89,7 @@ void setup(void)
     processMenu();
 }
 
-void loop(void) 
-{
-    ; 
-}
-
+void loop(void) { ; }
 
 void  processMenu()
 {
@@ -140,7 +136,7 @@ void set_current_menu_filename(int _selectedMenu)
 
     if(_menuchanged == false)
     {
-      return; // no need to process
+      return; // do nothing... no need to process
     }
 
     switch(_selectedMenu) // could just use _menuname and append ext...
@@ -193,13 +189,12 @@ void read_current_menu_file_macros_save_to_b_list(void)
     }
 }
 
-
 void process_b_list_item_and_stuffkey_on_touch(String str)
 {
     byte isk = 0;                         // is special key
     byte len = str.length();
 
-    printStack("process_b_list_item_and_stuffkey_on_touch()");
+    if(DEBUG1) printStack("process_b_list_item_and_stuffkey_on_touch()");
 
     static char buffer2[MACRO_MAX_LENGTH+1];
 
@@ -207,9 +202,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     {
         buffer2[i] = str[i]; 
     }
-    
     ///Serial.printf("\nThe menu line is: \"%s\" (%d characters) ... " , buffer2, len);
-
     if (strstr(buffer2, "[LA]")) { Keyboard.press(KEY_LEFT_ALT); isk = 1; }
     if (strstr(buffer2, "[RA]")) { Keyboard.press(KEY_RIGHT_ALT); isk = 1; }
     if (strstr(buffer2, "[LC]")) { Keyboard.press(KEY_LEFT_CTRL); isk = 1; }
@@ -297,12 +290,7 @@ void lcd_init()
 
     if (error == 0)
     {
-      if(DEBUG1)
-      {
-        Serial.print("I2C device found at address 0x");
-        Serial.print(TOUCH_I2C_ADD, HEX);
-        Serial.println("  !\n");
-      }
+      if(DEBUG1) { Serial.print("I2C device found at address 0x"); Serial.print(TOUCH_I2C_ADD, HEX); Serial.println("  !\n"); }
     }
     else
     {
@@ -367,16 +355,6 @@ void drawButton_p(Button b)
     lcd.setTextSize(textSize);
 }
 
-void clean_button()
-{
-    lcd.fillRect(BUTTON_POS_X, BUTTON_POS_Y, 319 - BUTTON_POS_X, 479 - BUTTON_POS_Y, COLOR_BACKGROUND);
-}
-
-void clean_screen()
-{
-    lcd.fillRect(0, 0, 319, 479, COLOR_BACKGROUND);
-}
-
 void sd_init()
 {
     SD_SPI.begin(SD_SCK, SD_MISO, SD_MOSI);
@@ -390,10 +368,9 @@ void sd_init()
     }
 }
 
-// Display menu image from file
+// Read & Display menu image from file
 int print_img(fs::FS &fs, String filename, int x, int y)
 {
-///printStack("Pre print_img");
     File f = fs.open(filename, "r");
     if (!f)
     {
@@ -413,10 +390,8 @@ int print_img(fs::FS &fs, String filename, int x, int y)
         lcd.pushImage(0, row, X, 1, (lgfx::rgb888_t *)RGB);
     }
     f.close();
-///printStack("Post print_img");
     return 1;
 }
-
 
 void keyboard_print_macro(String str) // print menu line/macro after removing token...
 {
@@ -440,17 +415,14 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
     }
 
     buffer[j] = 0;
-    
-    Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
-
+    if(DEBUG1) Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
     Keyboard.print(buffer);
 }
 
-
-
-// found on esp32,com ... para ...very useful...
+// found on esp32,com ... modified ...very useful...
 void printStack(char *mytxt)
 {
+
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
   
