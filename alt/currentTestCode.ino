@@ -144,11 +144,14 @@ void processMenuLine(String str)
         buffer2[i] = str[i]; 
         //Serial.printf("[%d]", str[i]);
     }
-    buffer2[len-2] = 0;
-    /* for (int i = 0; i <= strlen(buffer2); i++) // \n = 10 \r = 13 eol = 0 { Serial.printf("[%d]", buffer2[i]); } */
+    //buffer2[len-2] = 0;
+    for (int i = 0; i <= strlen(buffer2); i++) // \n = 10 \r = 13 eol = 0 { Serial.printf("[%d]", buffer2[i]); }
     
     Serial.printf("\nThe menu line is: \"%s\" (%d characters) ... " , buffer2, len);
-
+    if (strstr(buffer2, "[LA]"))
+    {
+        Keyboard.press(KEY_LEFT_ALT); isk = 1; if(DEBUG1) Serial.print("\n * Left ALT was pressed *\n");
+    }
     if (strstr(buffer2, "[RA]"))
     {
         Keyboard.press(KEY_RIGHT_ALT); isk = 1; if(DEBUG1) Serial.print("\n * Right ALT was pressed *\n");
