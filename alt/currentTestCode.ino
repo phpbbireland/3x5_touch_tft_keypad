@@ -97,31 +97,14 @@ void loop(void)
 
 void  processMenu()
 {
-    char str[80];
-    int adj = 0;
-    
     set_current_menu_filename(_selectedMenu);
     read_current_menu_file_macros_save_to_b_list();
 
     if(DEBUG1) { Serial.print("\nList of Menu Items begins... Buttons [x pos][y pos][line #]\n\n"); }
     
-    // Build Buttons
-    for (int i = 0; i < BUTTONS_PER_PAGE; i++)
-    {
-        if(DEBUG1) { Serial.print("X["); Serial.printf("%3d", BUTTON_POS_X + i % 3 * 105); Serial.print("] \tY["); Serial.printf("%3d", BUTTON_POS_Y + i / 3 * 82 + adj); Serial.print("] \tLine["); }
+    buildButtons();
 
-        b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj, 103, 95, "NULL", ENABLE);
-        b[i].setText(b_list[i]);
-        b[i].setValue(i);
-
-        if(DEBUG1) { Serial.printf("%2d", i); Serial.print("]"); Serial.print(" = "); Serial.print(b_list[i]); Serial.print(""); }
-        
-        if(i == 2 || i == 5 || i == 8 || i == 11) adj=adj+14; // track columns add 14px on each
-        drawButton(b[i]);
-    }
-    if(DEBUG1) Serial.print("\nList of Menu items ends...\n");
-
-    while(1)
+    while(1) // Welcome to the Hotel California ;)
     {
         ft6236_pos(_pos);
         delay(100);
@@ -136,12 +119,14 @@ void  processMenu()
                 drawButton_p(b[i]);
                 delay(BUTTON_DELAY);
                 drawButton(b[i]);
+
                 process_b_list_item_and_stuffkey_on_touch(b_list[i]);
 
-                if(_menuchanged)
+                if(_menuchanged) // update for new Menu
                 {
                     set_current_menu_filename(_selectedMenu);
                     read_current_menu_file_macros_save_to_b_list();
+                    buildButtons();
                 }
             }
         }
@@ -214,7 +199,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     byte isk = 0;                         // is special key
     byte len = str.length();
 
-    //printStack("process_b_list_item_and_stuffkey_on_touch()");
+    printStack("process_b_list_item_and_stuffkey_on_touch()");
 
     static char buffer2[MACRO_MAX_LENGTH+1];
 
@@ -327,6 +312,26 @@ void lcd_init()
 }
 
 /*  button code from example sketch */
+void buildButtons()
+{
+    // Build Buttons red box around icon
+    int adj = 0;
+    for (int i = 0; i < BUTTONS_PER_PAGE; i++)
+    {
+        if(DEBUG1) { Serial.print("X["); Serial.printf("%3d", BUTTON_POS_X + i % 3 * 105); Serial.print("] \tY["); Serial.printf("%3d", BUTTON_POS_Y + i / 3 * 82 + adj); Serial.print("] \tLine["); }
+
+        b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj, 103, 95, "NULL", ENABLE);
+        b[i].setText(b_list[i]);
+        b[i].setValue(i);
+
+        if(DEBUG1) { Serial.printf("%2d", i); Serial.print("]"); Serial.print(" = "); Serial.print(b_list[i]); Serial.print(""); }
+        
+        if(i == 2 || i == 5 || i == 8 || i == 11) adj=adj+14; // track columns add 14px on each
+        drawButton(b[i]);
+    }
+    if(DEBUG1) Serial.print("\nList of Menu items ends...\n");
+}
+
 void drawButton(Button b)
 {
     int b_x;
@@ -366,6 +371,7 @@ void clean_button()
 {
     lcd.fillRect(BUTTON_POS_X, BUTTON_POS_Y, 319 - BUTTON_POS_X, 479 - BUTTON_POS_Y, COLOR_BACKGROUND);
 }
+
 void clean_screen()
 {
     lcd.fillRect(0, 0, 319, 479, COLOR_BACKGROUND);
@@ -415,12 +421,15 @@ int print_img(fs::FS &fs, String filename, int x, int y)
 void keyboard_print_macro(String str) // print menu line/macro after removing token...
 {
     char buffer[129] = "";
+
     int i = 0;
     int j = 0;
     int last_bracket = 0;
-    
+
     last_bracket = str.lastIndexOf(']');
+
     if (last_bracket) last_bracket++;
+
     for (i = last_bracket; i < (str.length()); i++)
     {
         char c = str[i];
@@ -429,16 +438,22 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
         Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
         j++;
     }
+
     buffer[j] = 0;
+    
     Serial.printf("\nThe Keyboard.print buffer contains: [%s]", buffer); 
+
     Keyboard.print(buffer);
 }
+
+
 
 // found on esp32,com ... para ...very useful...
 void printStack(char *mytxt)
 {
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
+  
   UBaseType_t watermarkStart = uxTaskGetStackHighWaterMark(NULL);
   
   char *StackPtrEnd = StackPtrAtStart - watermarkStart;
@@ -448,6 +463,7 @@ void printStack(char *mytxt)
   
   Serial.printf("Free Stack near previous: %d, now: %d,", stackori, (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd);
   Serial.printf(" this loop [%d] used: %4d, total stack used:%4d (%s)\r\n", loopcount, (uint32_t)stacktot - ((uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd), stackrun, mytxt);
+  
   stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;
 }
 
