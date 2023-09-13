@@ -227,20 +227,16 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); isk = 1; }
     if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); isk = 1; }
 
-
-    // MPXPlay
+    // Control for MPXPlay DOS Player... A project on its own...
     if (strstr(buffer2, "[<]")) { Keyboard.press('-'); _menuchanged = false; return; } //step (back) to previous song
     if (strstr(buffer2, "[>]")) { Keyboard.press('+'); _menuchanged = false; return; } //step to next song in playlist
     if (strstr(buffer2, "[P]")) { Keyboard.press('P'); _menuchanged = false; return; }  //Play/Pause
-
     if (strstr(buffer2, "[S+]")) { Keyboard.press(0x2827); _menuchanged = false;return; } // surround +
     if (strstr(buffer2, "[S-]")) { Keyboard.press(';'); _menuchanged = false; return; }   // surround -
-
     if (strstr(buffer2, "[B+]")) { Keyboard.press('"'); _menuchanged = false; return; } // bass +
     if (strstr(buffer2, "[B-]")) { Keyboard.press(':'); _menuchanged = false; return; } // bass -
     if (strstr(buffer2, "[T+]")) { Keyboard.press('}'); _menuchanged = false; return; } // treble +
     if (strstr(buffer2, "[T-]")) { Keyboard.press('{'); _menuchanged = false; return; } // treble -
-    
     if (strstr(buffer2, "[CF]")) { Keyboard.press('C'); _menuchanged = false; return; } // crossfade
     if (strstr(buffer2, "[MU]")) { Keyboard.press('M'); _menuchanged = false; return; } // Mute
     if (strstr(buffer2, "[RD]")) { Keyboard.press('N'); _menuchanged = false; return; } // Random 
