@@ -44,7 +44,7 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-#define MAXMENUS         3          // Current max menus - 1 (we start with 0)
+#define MAXMENUS         5           // Current max menus - 1 (we start with 0)
 
 #define TERMINAL "xfce4-terminal"   // default terminal
 #define DEBUG1 1
@@ -63,12 +63,12 @@ static bool _menuchanged = true;
 
 int _mx, _my = 0;       // global vars start with underscore _
 int _pos[2] = {0, 0};   // 
-int _currentMenu = 0;   //
-int _selectedMenu = 0;  //
+int _previousMenu = 1;   //
+int _selectedMenu = 1;  //
 int _currentLine = 0;   // 
 
-char _filename[12] = "/menu0.bmp";  //set to default menu
-char _menuname[12] = "/menu0";      //set to default macro file
+char _filename[12] = "/menu1.bmp";  //set to default menu
+char _menuname[12] = "/menu1";      //set to default macro file
 
 //String b_list[BUTTONS_PER_PAGE] = { "", "", "", "", "","", "", "", "", "", "", "", "", "", "" };
 String b_list[BUTTONS_PER_PAGE] = { "0", "0", "0", "0", "0","0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
@@ -110,7 +110,7 @@ void  processMenu()
             int button_value = UNABLE;
             if ((button_value = b[i].checkTouch(_pos[0], _pos[1])) != UNABLE)
             {
-                if(DEBUG1) { Serial.printf("\nPos is :%d, %d\n", _pos[0], _pos[1]); Serial.printf("Value is :%d\n", button_value); Serial.printf("Text is :"); Serial.println(b[i].getText()); Serial.print("{"); Serial.print(b_list[i]); Serial.print("}"); report(); }
+                if(DEBUG1) { Serial.printf("\nPos is :%d, %d\n", _pos[0], _pos[1]); Serial.printf("Button is :%d\n", button_value); Serial.printf("Text is :"); Serial.println(b[i].getText()); Serial.print("{"); Serial.print(b_list[i]); Serial.print("}"); report(); }
 
                 drawButton_p(b[i]);
                 delay(BUTTON_DELAY);
@@ -130,24 +130,24 @@ void  processMenu()
     loopcount = 0;
 }
 
-void set_current_menu_filename(int _selectedMenu)
+void set_current_menu_filename(int selected)
 {
-    if(DEBUG1) { Serial.printf("(_selectedMenu = [%d] _currentmenu = [%d])\n", _selectedMenu, _currentMenu); }
+    if(DEBUG1) { Serial.printf("(selected = [%d] _previousMenu = [%d])\n", selected, _previousMenu); }
 
     if(_menuchanged == false)
     {
       return; // do nothing... no need to process
     }
 
-    switch(_selectedMenu) // could just use _menuname and append ext...
+    switch(selected) // could just use _menuname and append ext...
     {
-        case 0: { strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
         case 1: { strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
         case 2: { strcpy(_filename, "/menu2.bmp"); strcpy(_menuname, "/menu2"); } break;
         case 3: { strcpy(_filename, "/menu3.bmp"); strcpy(_menuname, "/menu3"); } break;
-        //case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
-        //case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;        
-        default:{ strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
+        case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
+        case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;
+        case 6: { strcpy(_filename, "/menu6.bmp"); strcpy(_menuname, "/menu6"); } break;        
+        default:{ strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
     }
 
     lcd.setRotation(5);                   // fix for touch not rotating
@@ -180,6 +180,7 @@ void read_current_menu_file_macros_save_to_b_list(void)
             llcount++;
             charcount = 0;
          }
+         if(llcount > 14) break; // !!! important ... only read 15 lines/macros
        }
        myfile.close();
     }  
@@ -212,11 +213,6 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[LS]")) { Keyboard.press(KEY_LEFT_SHIFT); isk = 1; }
     if (strstr(buffer2, "[RS]")) { Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; }
     if (strstr(buffer2, "[TA]")) { Keyboard.press(KEY_TAB); isk = 1; }    
-    // Media
-    if (strstr(buffer2, "[MU]")) { Keyboard.press(MUTE); isk = 1; }
-    if (strstr(buffer2, "[VU]")) { Keyboard.press(VOLUME_UP); isk = 1; }    
-    if (strstr(buffer2, "[VD]")) { Keyboard.press(VOLUME_DOWN); isk = 1; }
-    if (strstr(buffer2, "[PP]")) { Keyboard.press(PLAY_OR_PAUSE); isk = 1; }
     // Function
     if (strstr(buffer2, "[F1]")) { Keyboard.press(KEY_F1); isk = 1; }
     if (strstr(buffer2, "[F2]")) { Keyboard.press(KEY_F2); isk = 1; }
@@ -230,6 +226,25 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); isk = 1; }
     if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); isk = 1; }
     if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); isk = 1; }
+
+
+    // MPXPlay
+    if (strstr(buffer2, "[<]")) { Keyboard.press('-'); _menuchanged = false; return; } //step (back) to previous song
+    if (strstr(buffer2, "[>]")) { Keyboard.press('+'); _menuchanged = false; return; } //step to next song in playlist
+    if (strstr(buffer2, "[P]")) { Keyboard.press('P'); _menuchanged = false; return; }  //Play/Pause
+
+    if (strstr(buffer2, "[S+]")) { Keyboard.press(0x2827); _menuchanged = false;return; } // surround +
+    if (strstr(buffer2, "[S-]")) { Keyboard.press(';'); _menuchanged = false; return; }   // surround -
+
+    if (strstr(buffer2, "[B+]")) { Keyboard.press('"'); _menuchanged = false; return; } // bass +
+    if (strstr(buffer2, "[B-]")) { Keyboard.press(':'); _menuchanged = false; return; } // bass -
+    if (strstr(buffer2, "[T+]")) { Keyboard.press('}'); _menuchanged = false; return; } // treble +
+    if (strstr(buffer2, "[T-]")) { Keyboard.press('{'); _menuchanged = false; return; } // treble -
+    
+    if (strstr(buffer2, "[CF]")) { Keyboard.press('C'); _menuchanged = false; return; } // crossfade
+    if (strstr(buffer2, "[MU]")) { Keyboard.press('M'); _menuchanged = false; return; } // Mute
+    if (strstr(buffer2, "[RD]")) { Keyboard.press('N'); _menuchanged = false; return; } // Random 
+
     // Terminal
     if (strstr(buffer2, "[T]"))
     {
@@ -258,23 +273,34 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
 
     if (strstr(buffer2, "[HOME]"))
     {
-      _currentMenu = _selectedMenu = 0; // reset current, selected menu
+      _previousMenu = _selectedMenu = 0; // reset current, selected menu
       _menuchanged = true;
     }
     else if (strstr(buffer2, "[NEXT]"))
     {
       if(_selectedMenu < MAXMENUS)
       {
-        _currentMenu = _selectedMenu; _selectedMenu++; // update current, selected menu
+        _previousMenu = _selectedMenu; _selectedMenu++; // update current, selected menu
         _menuchanged = true;
+      }
+      else if(_selectedMenu == MAXMENUS)
+      {
+        _previousMenu = _selectedMenu = 0; // reset current, selected menu
+        _menuchanged = true;  
       }
     }
     else if (strstr(buffer2, "[PREV]"))
     {
-      if(_selectedMenu > 0)
+      if(_selectedMenu > 1)
       {
-         _currentMenu = _selectedMenu; _selectedMenu--;  // update current, selected menu
+         _previousMenu = _selectedMenu; _selectedMenu--;  // update current, selected menu
          _menuchanged = true;
+      }
+      else if(_selectedMenu == 0)
+      {
+        _previousMenu = MAXMENUS - 1;
+        _selectedMenu = MAXMENUS;
+        _menuchanged = true;
       }
     }
     else
