@@ -156,6 +156,9 @@ void set_current_menu_filename(int selected)
     lcd.setRotation(0);                   // reset rotation
 }
 
+/*
+ * Please note, menu files have 15 consecutive lines, no empty lines, no comments etc...
+ */
 void read_current_menu_file_macros_save_to_b_list(void)
 {
     int charcount = 0;
