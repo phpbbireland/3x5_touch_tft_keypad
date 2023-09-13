@@ -192,7 +192,7 @@ void read_current_menu_file_macros_save_to_b_list(void)
 
 void process_b_list_item_and_stuffkey_on_touch(String str)
 {
-    byte isk = 0;                         // is special key
+    byte is_fcas_key = 0;                         // For function-ctrl-alt-shift-etc keys ? So we don't PROCESS/PRINT them...
     byte len = str.length();
 
     if(DEBUG1) printStack("process_b_list_item_and_stuffkey_on_touch()");
@@ -205,45 +205,48 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     }
     ///Serial.printf("\nThe menu line is: \"%s\" (%d characters) ... " , buffer2, len);
 
-    // Special ref USBHID.h
-    if (strstr(buffer2, "[LA]")) { Keyboard.press(KEY_LEFT_ALT); isk = 1; }
-    if (strstr(buffer2, "[RA]")) { Keyboard.press(KEY_RIGHT_ALT); isk = 1; }
-    if (strstr(buffer2, "[LC]")) { Keyboard.press(KEY_LEFT_CTRL); isk = 1; }
-    if (strstr(buffer2, "[RC]")) { Keyboard.press(KEY_RIGHT_CTRL); isk = 1; }
-    if (strstr(buffer2, "[LS]")) { Keyboard.press(KEY_LEFT_SHIFT); isk = 1; }
-    if (strstr(buffer2, "[RS]")) { Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; }
-    if (strstr(buffer2, "[TA]")) { Keyboard.press(KEY_TAB); isk = 1; }    
-    // Function
-    if (strstr(buffer2, "[F1]")) { Keyboard.press(KEY_F1); isk = 1; }
-    if (strstr(buffer2, "[F2]")) { Keyboard.press(KEY_F2); isk = 1; }
-    if (strstr(buffer2, "[F3]")) { Keyboard.press(KEY_F3); isk = 1; }
-    if (strstr(buffer2, "[F4]")) { Keyboard.press(KEY_F4); isk = 1; }
-    if (strstr(buffer2, "[F5]")) { Keyboard.press(KEY_F5); isk = 1; }
-    if (strstr(buffer2, "[F6]")) { Keyboard.press(KEY_F6); isk = 1; }
-    if (strstr(buffer2, "[F7]")) { Keyboard.press(KEY_F7); isk = 1; }
-    if (strstr(buffer2, "[F8]")) { Keyboard.press(KEY_F8); isk = 1; }
-    if (strstr(buffer2, "[F9]")) { Keyboard.press(KEY_F9); isk = 1; }
-    if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); isk = 1; }
-    if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); isk = 1; }
-    if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); isk = 1; }
-
-
-    // MPXPlay
-    if (strstr(buffer2, "[<]")) { Keyboard.press('-'); _menuchanged = false; Keyboard.releaseAll(); return; } //step (back) to previous song
-    if (strstr(buffer2, "[>]")) { Keyboard.press('+'); _menuchanged = false; Keyboard.releaseAll(); return; } //step to next song in playlist
-    if (strstr(buffer2, "[P]")) { Keyboard.press('P'); _menuchanged = false; Keyboard.releaseAll(); return; }  //Play/Pause
-
-    if (strstr(buffer2, "[S+]")) { Keyboard.press(0x2827); _menuchanged = false; Keyboard.releaseAll(); return; } // surround +
+    // MPXPlay test case...
+    if (strstr(buffer2, "[<]"))  { Keyboard.press('-'); _menuchanged = false; Keyboard.releaseAll(); return; } //step (back) to previous song
+    if (strstr(buffer2, "[>]"))  { Keyboard.press('+'); _menuchanged = false; Keyboard.releaseAll(); return; } //step to next song in playlist
+    if (strstr(buffer2, "[P]"))  { Keyboard.press('P'); _menuchanged = false; Keyboard.releaseAll(); return; }  //Play/Pause
+    if (strstr(buffer2, "[S+]")) { Keyboard.press(0x2827); _menuchanged = false; Keyboard.releaseAll(); return; } // surround + '
     if (strstr(buffer2, "[S-]")) { Keyboard.press(';'); _menuchanged = false; Keyboard.releaseAll(); return; }   // surround -
-
     if (strstr(buffer2, "[B+]")) { Keyboard.press('"'); _menuchanged = false; Keyboard.releaseAll(); return; } // bass +
     if (strstr(buffer2, "[B-]")) { Keyboard.press(':'); _menuchanged = false; Keyboard.releaseAll(); return; } // bass -
     if (strstr(buffer2, "[T+]")) { Keyboard.press('}'); _menuchanged = false; Keyboard.releaseAll(); return; } // treble +
     if (strstr(buffer2, "[T-]")) { Keyboard.press('{'); _menuchanged = false; Keyboard.releaseAll(); return; } // treble -
-    
     if (strstr(buffer2, "[CF]")) { Keyboard.press('C'); _menuchanged = false; Keyboard.releaseAll(); return; } // crossfade
     if (strstr(buffer2, "[MU]")) { Keyboard.press('M'); _menuchanged = false; Keyboard.releaseAll(); return; } // Mute
     if (strstr(buffer2, "[RD]")) { Keyboard.press('N'); _menuchanged = false; Keyboard.releaseAll(); return; } // Random 
+
+
+    // FUNCTION, CTRL, ALT, SHIFT, TAB KEYS
+    if (strstr(buffer2, "[LA]"))  { Keyboard.press(KEY_LEFT_ALT);    is_fcas_key = 1; }
+    if (strstr(buffer2, "[RA]"))  { Keyboard.press(KEY_RIGHT_ALT);   is_fcas_key = 1; }
+    if (strstr(buffer2, "[LC]"))  { Keyboard.press(KEY_LEFT_CTRL);   is_fcas_key = 1; }
+    if (strstr(buffer2, "[RC]"))  { Keyboard.press(KEY_RIGHT_CTRL);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[LS]"))  { Keyboard.press(KEY_LEFT_SHIFT);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[RS]"))  { Keyboard.press(KEY_RIGHT_SHIFT); is_fcas_key = 1; }
+
+    if (strstr(buffer2, "[TAB]")) { Keyboard.press(KEY_TAB); is_fcas_key = 1; }
+
+    if (strstr(buffer2, "[F1]"))  { Keyboard.press(KEY_F1);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F2]"))  { Keyboard.press(KEY_F2);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F3]"))  { Keyboard.press(KEY_F3);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F4]"))  { Keyboard.press(KEY_F4);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F5]"))  { Keyboard.press(KEY_F5);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F6]"))  { Keyboard.press(KEY_F6);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F7]"))  { Keyboard.press(KEY_F7);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F8]"))  { Keyboard.press(KEY_F8);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F9]"))  { Keyboard.press(KEY_F9);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); is_fcas_key = 1; }
+    if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); is_fcas_key = 1; }
+    if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); is_fcas_key = 1; }
+
+    // MENU CONTROL KEYS, we also don't print them...
+    if (strstr(buffer2, "[HOME]")) { is_fcas_key = 1; }
+    if (strstr(buffer2, "[PREV]")) { is_fcas_key = 1; }
+    if (strstr(buffer2, "[NEXT]")) { is_fcas_key = 1; }
 
     // Terminal
     if (strstr(buffer2, "[T]"))
@@ -257,10 +260,10 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         return;
     }
 
-    if (isk)
+    if (is_fcas_key)
     {
         keyboard_print_macro(str);
-        isk = 0;
+        is_fcas_key = 0;
     }
     else
     {
@@ -271,6 +274,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
 
     Keyboard.releaseAll();
 
+    // update menu selected if changed...
     if (strstr(buffer2, "[HOME]"))
     {
       _previousMenu = _selectedMenu = 1; // reset current, selected menu
@@ -485,4 +489,3 @@ void printStack(char *mytxt)
   
   stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;
 }
-
