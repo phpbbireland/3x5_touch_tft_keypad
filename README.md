@@ -37,9 +37,10 @@ xfce4-terminal
 kcalc
 [RA]4
 meld
+[NEXT]
 /home/Mike/AppImages/Stellarium.AppImage
-[LC]c
-[LC]v
+[PREV]
+
 ```
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
