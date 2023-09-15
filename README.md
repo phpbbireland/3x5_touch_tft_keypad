@@ -73,8 +73,6 @@ Each line of the menu text can contain:
 **After initial programming of the TFT board:**  
 All changes are made to the *menu1* text file and/or the *menu1.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
 
-*See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
-
 **Currently:**  
 It is possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 12 or 13 buttons (two would be required for navigation, one addiional for HOME menu).
 ...
