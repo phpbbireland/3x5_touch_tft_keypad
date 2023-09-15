@@ -40,12 +40,12 @@ meld
 [NEXT]
 /home/Mike/AppImages/Stellarium.AppImage
 [PREV]
-
+...
 <br>
 <img src="/images/menu1.bmp" width=360>  
 Main Menu Image menu1.bmp
-<br>
-```
+<br><br>
+
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
 - [LS] = Left Shift - [RS] = Right Shift
