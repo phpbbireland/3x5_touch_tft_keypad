@@ -50,7 +50,7 @@ meld
 - [TA] = Tab (used in conjunction with Alt, Ctrl Keys)
 - [F?] = Function Keys, F1 to F24 (example [F4], [F12] etc..) ***are these needed***)
 - [T]   = Open A Terminal
-- [T]file_name... Launch file_name inside a terminal...
+- [T]program_name... Launch program inside a terminal...
   
 <br>
 <img src="/images/menu0.bmp" width=360>  
