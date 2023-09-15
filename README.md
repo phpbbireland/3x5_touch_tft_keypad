@@ -43,8 +43,11 @@ meld
 ```
 <br>
 <img src="/images/menu1.bmp" width=360>  
-Main menu test image (menu1.bmp)<br>
+Example Main menu (menu1.bmp)<br>
 <br>
+<img src="/images/menu5.bmp" width=360>  
+Example of menu screen with a few icons added (/images/menu5.bmp)  
+<br><br>
 
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
@@ -56,11 +59,6 @@ Main menu test image (menu1.bmp)<br>
 - [T]   = Open A Terminal
 - [T]program_name... Launch program inside a terminal...
   
-<br>
-<img src="/images/menu5.bmp" width=360>  
-Example of menu screen with a few icons added (/images/menu1.bmp)  
-<br><br>
-
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of code.ino for required libraries), compile and upload *code.ini* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
 
