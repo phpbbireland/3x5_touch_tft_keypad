@@ -15,7 +15,7 @@ Example of finished project (stl files here) [Thinyverse](https://www.thingivers
 
 **The Basics:**  
 We start with a 480px by 320px background image, it consists of 16 button areas (identified by the red outlined squares).
-Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu0.bmp and save to SD card.  
+Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu1.bmp and save to SD card.  
 
 <br>
 <img src="/images/blankbg.bmp" width=480>  
@@ -53,8 +53,8 @@ meld
 - [T]program_name... Launch program inside a terminal...
   
 <br>
-<img src="/images/menu0.bmp" width=360>  
-Example of menu screen with a few icons added (/images/menu0.bmp)  
+<img src="/images/menu1.bmp" width=360>  
+Example of menu screen with a few icons added (/images/menu1.bmp)  
 <br><br>
 
 **Programming:**  
@@ -71,7 +71,7 @@ Each line of the menu text can contain:
 -  Any combination of keys up to 128 characters.  
 
 **After initial programming of the TFT board:**  
-All changes are made to the *menu0* text file and/or the *menu.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
+All changes are made to the *menu1* text file and/or the *menu.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
 
 *See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
 
