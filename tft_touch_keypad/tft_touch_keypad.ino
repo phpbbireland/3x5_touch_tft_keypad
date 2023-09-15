@@ -156,9 +156,7 @@ void set_current_menu_filename(int selected)
     lcd.setRotation(0);                   // reset rotation
 }
 
-
 //  Please note, menu files have 15 consecutive lines, no empty lines, no comments etc...
-
 void read_current_menu_file_macros_save_to_b_list(void)
 {
     int charcount = 0;
@@ -173,20 +171,10 @@ void read_current_menu_file_macros_save_to_b_list(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
-    
-    //Serial.printf("[%d][%c],);", chr, chr);
-    //Serial.printf("%c", chr);
-    //Serial.printf("%c", chr);
 
         if(chr == '\n')
         {
-            //buf[charcount] = '0';
-            b_list[llcount] = buf;
-
-            //Serial.print(b_list[llcount]); Serial.print("\n");
-            
             for(int x = 0; x < charcount; x++) buf[x] = 0;      // Stop strange behavior...
-
             llcount++;
             charcount = 0;
          }
@@ -360,14 +348,14 @@ void buildButtons()
     int adj = 0;
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
-        //if(DEBUG1) Serial.printf("X[%3d] \t Y[%3d]", BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj);
+        //if(DEBUG1) Serial.printf("X[%3d] \t Y[%3d]", BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj); errorin code?
         if(DEBUG1) { Serial.print("X["); Serial.printf("%3d", BUTTON_POS_X + i % 3 * 105); Serial.print("] \tY["); Serial.printf("%3d", BUTTON_POS_Y + i / 3 * 82 + adj); Serial.print("] \tLine["); }
 
         b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj, 103, 95, "NULL", ENABLE);
         b[i].setText(b_list[i]);
         b[i].setValue(i);
 
-        //if(DEBUG1) Serial.printf("\tLine [%2d] %s\n", i, b_list[i]);
+        //if(DEBUG1) Serial.printf("\tLine [%2d] %s\n", i, b_list[i]); error in code 
         if(DEBUG1) { Serial.printf("%2d", i); Serial.print("]"); Serial.print(" = "); Serial.print(b_list[i]); Serial.print(""); }
 
         if(i == 2 || i == 5 || i == 8 || i == 11) adj=adj+14; // track columns add 14px on each
@@ -386,7 +374,6 @@ void drawButton(Button b)
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
-
     lcd.drawRect(b_x, b_y, b_w, b_h, COLOR_LINE);
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setCursor(b_x + 2, b_y + b_w / 2 + 2);
@@ -404,7 +391,6 @@ void drawButton_p(Button b) // highlight on touch
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
-
     lcd.drawRect(b_x, b_y, b_w, b_h, TFT_WHITE);
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setTextColor(COLOR_TEXT);
@@ -478,12 +464,10 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
 // found on esp32,com ... modified ...very useful...
 void printStack(char *mytxt)
 {
-
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
   
   UBaseType_t watermarkStart = uxTaskGetStackHighWaterMark(NULL);
-  
   char *StackPtrEnd = StackPtrAtStart - watermarkStart;
   
   if(stacktot == 0) { stackori = stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
