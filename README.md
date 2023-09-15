@@ -41,7 +41,6 @@ meld
 /home/Mike/AppImages/Stellarium.AppImage
 [PREV]
 ```
-
 <br>
 <img src="/images/menu1.bmp" width=360>  
 Main Menu Image menu1.bmp
