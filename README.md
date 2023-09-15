@@ -53,7 +53,7 @@ meld
 - [T]program_name... Launch program inside a terminal...
   
 <br>
-<img src="/images/menu1.bmp" width=360>  
+<img src="/images/menu5.bmp" width=360>  
 Example of menu screen with a few icons added (/images/menu1.bmp)  
 <br><br>
 
