@@ -1,7 +1,7 @@
 /*
 * A rework of the code.ino to work with multiple menus/screens
-* Last tested: 09/09/23, 7:50 it compiles!
-* Last Edits:   Changed some var name for better readability..
+* Last tested: 09/15/23, 2:00 it compiles, it works...
+* Last Edits:   Rearranged some code...
 * Reboot 'after x loops' Fixed, thanks to MicroController over at ESP32 Forums (infinite recursion).
 */
 
@@ -44,7 +44,7 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-#define MAXMENUS         3          // Current max menus - 1 (we start with 0)
+#define MAXMENUS         5           // Current max menus - 1 (we start with 0)
 
 #define TERMINAL "xfce4-terminal"   // default terminal
 #define DEBUG1 1
@@ -63,12 +63,12 @@ static bool _menuchanged = true;
 
 int _mx, _my = 0;       // global vars start with underscore _
 int _pos[2] = {0, 0};   // 
-int _currentMenu = 0;   //
-int _selectedMenu = 0;  //
+int _previousMenu = 1;   //
+int _selectedMenu = 1;  //
 int _currentLine = 0;   // 
 
-char _filename[12] = "/menu0.bmp";  //set to default menu
-char _menuname[12] = "/menu0";      //set to default macro file
+char _filename[12] = "/menu1.bmp";  //set to default menu
+char _menuname[12] = "/menu1";      //set to default macro file
 
 //String b_list[BUTTONS_PER_PAGE] = { "", "", "", "", "","", "", "", "", "", "", "", "", "", "" };
 String b_list[BUTTONS_PER_PAGE] = { "0", "0", "0", "0", "0","0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
@@ -110,7 +110,7 @@ void  processMenu()
             int button_value = UNABLE;
             if ((button_value = b[i].checkTouch(_pos[0], _pos[1])) != UNABLE)
             {
-                if(DEBUG1) { Serial.printf("\nPos is :%d, %d\n", _pos[0], _pos[1]); Serial.printf("Value is :%d\n", button_value); Serial.printf("Text is :"); Serial.println(b[i].getText()); Serial.print("{"); Serial.print(b_list[i]); Serial.print("}"); report(); }
+                //if(DEBUG1) { Serial.printf("\nPos is :%d, %d\n", _pos[0], _pos[1]); Serial.printf("Button is :%d\n", button_value); Serial.printf("Text is :"); Serial.println(b[i].getText()); Serial.print("{"); Serial.print(b_list[i]); Serial.print("}"); report(); }
 
                 drawButton_p(b[i]);
                 delay(BUTTON_DELAY);
@@ -130,24 +130,24 @@ void  processMenu()
     loopcount = 0;
 }
 
-void set_current_menu_filename(int _selectedMenu)
+void set_current_menu_filename(int selected)
 {
-    if(DEBUG1) { Serial.printf("(_selectedMenu = [%d] _currentmenu = [%d])\n", _selectedMenu, _currentMenu); }
+    if(DEBUG1) { Serial.printf("(selected = [%d] _previousMenu = [%d])\n", selected, _previousMenu); }
 
     if(_menuchanged == false)
     {
       return; // do nothing... no need to process
     }
 
-    switch(_selectedMenu) // could just use _menuname and append ext...
+    switch(selected) // could just use _menuname and append ext...
     {
-        case 0: { strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
         case 1: { strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
         case 2: { strcpy(_filename, "/menu2.bmp"); strcpy(_menuname, "/menu2"); } break;
         case 3: { strcpy(_filename, "/menu3.bmp"); strcpy(_menuname, "/menu3"); } break;
-        //case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
-        //case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;        
-        default:{ strcpy(_filename, "/menu0.bmp"); strcpy(_menuname, "/menu0"); } break;
+        case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
+        case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;
+        case 6: { strcpy(_filename, "/menu6.bmp"); strcpy(_menuname, "/menu6"); } break;        
+        default:{ strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
     }
 
     lcd.setRotation(5);                   // fix for touch not rotating
@@ -155,6 +155,9 @@ void set_current_menu_filename(int _selectedMenu)
     delay(100);  
     lcd.setRotation(0);                   // reset rotation
 }
+
+
+//  Please note, menu files have 15 consecutive lines, no empty lines, no comments etc...
 
 void read_current_menu_file_macros_save_to_b_list(void)
 {
@@ -171,15 +174,23 @@ void read_current_menu_file_macros_save_to_b_list(void)
         chr =  myfile.read();
         buf[charcount++] = chr;
     
+    //Serial.printf("[%d][%c],);", chr, chr);
+    //Serial.printf("%c", chr);
+    //Serial.printf("%c", chr);
+
         if(chr == '\n')
         {
-            buf[charcount] = '\n\r';
+            //buf[charcount] = '0';
             b_list[llcount] = buf;
+
+            //Serial.print(b_list[llcount]); Serial.print("\n");
             
             for(int x = 0; x < charcount; x++) buf[x] = 0;      // Stop strange behavior...
+
             llcount++;
             charcount = 0;
          }
+         if(llcount > 14) break; // !!! important ... only read 15 lines/macros
        }
        myfile.close();
     }  
@@ -191,7 +202,7 @@ void read_current_menu_file_macros_save_to_b_list(void)
 
 void process_b_list_item_and_stuffkey_on_touch(String str)
 {
-    byte isk = 0;                         // is special key
+    byte is_fcas_key = 0;  // function, ctrl, alt, shift, etc., keys ? So we don't PROCESS/PRINT them...
     byte len = str.length();
 
     if(DEBUG1) printStack("process_b_list_item_and_stuffkey_on_touch()");
@@ -203,13 +214,87 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         buffer2[i] = str[i]; 
     }
     ///Serial.printf("\nThe menu line is: \"%s\" (%d characters) ... " , buffer2, len);
-    if (strstr(buffer2, "[LA]")) { Keyboard.press(KEY_LEFT_ALT); isk = 1; }
-    if (strstr(buffer2, "[RA]")) { Keyboard.press(KEY_RIGHT_ALT); isk = 1; }
-    if (strstr(buffer2, "[LC]")) { Keyboard.press(KEY_LEFT_CTRL); isk = 1; }
-    if (strstr(buffer2, "[RC]")) { Keyboard.press(KEY_RIGHT_CTRL); isk = 1; }
-    if (strstr(buffer2, "[LS]")) { Keyboard.press(KEY_LEFT_SHIFT); isk = 1; }
-    if (strstr(buffer2, "[RS]")) { Keyboard.press(KEY_RIGHT_SHIFT); isk = 1; }
 
+    // If menu nav keys, process and return... 
+    if(strstr(buffer2, "[HOME]") || strstr(buffer2, "[PREV]") || strstr(buffer2, "[NEXT]"))
+    {
+        if (strstr(buffer2, "[HOME]"))
+        {
+            _previousMenu = _selectedMenu = 1;                  // reset current & selected menu to 1
+            _menuchanged = true;
+            return;
+        }
+        
+        if (strstr(buffer2, "[NEXT]"))
+        {
+            if(_selectedMenu < MAXMENUS)
+            {
+                _previousMenu = _selectedMenu; _selectedMenu++; // update current, selected menu
+                _menuchanged = true;
+            }
+            else if(_selectedMenu == MAXMENUS)
+            {
+                _previousMenu = _selectedMenu = 1;              // reset current, selected menu
+                _menuchanged = true;  
+            }
+            return;
+        }
+
+        if (strstr(buffer2, "[PREV]"))
+        {
+            if(_selectedMenu > 1)
+            {
+                _previousMenu = _selectedMenu; _selectedMenu--;  // update current, selected menu
+                _menuchanged = true;
+            }
+            else if(_selectedMenu == 1)
+            {
+                _previousMenu = MAXMENUS - 1;
+                _selectedMenu = MAXMENUS;
+                _menuchanged = true;
+            }
+            return;
+        }
+    }
+
+    _menuchanged = false;
+
+    // MPXPlay test case...
+    if (strstr(buffer2, "[<]"))  { Keyboard.press('-'); _menuchanged = false; Keyboard.releaseAll(); return; } //step (back) to previous song
+    if (strstr(buffer2, "[>]"))  { Keyboard.press('+'); _menuchanged = false; Keyboard.releaseAll(); return; } //step to next song in playlist
+    if (strstr(buffer2, "[P]"))  { Keyboard.press('P'); _menuchanged = false; Keyboard.releaseAll(); return; }  //Play/Pause
+    if (strstr(buffer2, "[S+]")) { Keyboard.press(0x2827); _menuchanged = false; Keyboard.releaseAll(); return; } // surround + '
+    if (strstr(buffer2, "[S-]")) { Keyboard.press(';'); _menuchanged = false; Keyboard.releaseAll(); return; }   // surround -
+    if (strstr(buffer2, "[B+]")) { Keyboard.press('"'); _menuchanged = false; Keyboard.releaseAll(); return; } // bass +
+    if (strstr(buffer2, "[B-]")) { Keyboard.press(':'); _menuchanged = false; Keyboard.releaseAll(); return; } // bass -
+    if (strstr(buffer2, "[T+]")) { Keyboard.press('}'); _menuchanged = false; Keyboard.releaseAll(); return; } // treble +
+    if (strstr(buffer2, "[T-]")) { Keyboard.press('{'); _menuchanged = false; Keyboard.releaseAll(); return; } // treble -
+    if (strstr(buffer2, "[CF]")) { Keyboard.press('C'); _menuchanged = false; Keyboard.releaseAll(); return; } // crossfade
+    if (strstr(buffer2, "[MU]")) { Keyboard.press('M'); _menuchanged = false; Keyboard.releaseAll(); return; } // Mute
+    if (strstr(buffer2, "[RD]")) { Keyboard.press('N'); _menuchanged = false; Keyboard.releaseAll(); return; } // Random 
+
+    // FUNCTION, CTRL, ALT, SHIFT, TAB KEYS
+    if (strstr(buffer2, "[LA]"))  { Keyboard.press(KEY_LEFT_ALT);    is_fcas_key = 1; }
+    if (strstr(buffer2, "[RA]"))  { Keyboard.press(KEY_RIGHT_ALT);   is_fcas_key = 1; }
+    if (strstr(buffer2, "[LC]"))  { Keyboard.press(KEY_LEFT_CTRL);   is_fcas_key = 1; }
+    if (strstr(buffer2, "[RC]"))  { Keyboard.press(KEY_RIGHT_CTRL);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[LS]"))  { Keyboard.press(KEY_LEFT_SHIFT);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[RS]"))  { Keyboard.press(KEY_RIGHT_SHIFT); is_fcas_key = 1; }
+    if (strstr(buffer2, "[TAB]")) { Keyboard.press(KEY_TAB); is_fcas_key = 1; }
+    if (strstr(buffer2, "[F1]"))  { Keyboard.press(KEY_F1);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F2]"))  { Keyboard.press(KEY_F2);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F3]"))  { Keyboard.press(KEY_F3);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F4]"))  { Keyboard.press(KEY_F4);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F5]"))  { Keyboard.press(KEY_F5);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F6]"))  { Keyboard.press(KEY_F6);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F7]"))  { Keyboard.press(KEY_F7);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F8]"))  { Keyboard.press(KEY_F8);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F9]"))  { Keyboard.press(KEY_F9);  is_fcas_key = 1; }
+    if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); is_fcas_key = 1; }
+    if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); is_fcas_key = 1; }
+    if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); is_fcas_key = 1; }
+
+    // Open in Terminal
     if (strstr(buffer2, "[T]"))
     {
         Keyboard.print(TERMINAL);
@@ -221,12 +306,12 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         return;
     }
 
-    if (isk)
+    if (is_fcas_key)                // if special key, then use this process
     {
         keyboard_print_macro(str);
-        isk = 0;
+        is_fcas_key = 0;
     }
-    else
+    else                            // if not special key, use this process
     {
         Keyboard.print(str);
         delay(100);
@@ -234,32 +319,6 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     }
 
     Keyboard.releaseAll();
-
-    if (strstr(buffer2, "[HOME]"))
-    {
-      _currentMenu = _selectedMenu = 0; // reset current, selected menu
-      _menuchanged = true;
-    }
-    else if (strstr(buffer2, "[NEXT]"))
-    {
-      if(_selectedMenu < MAXMENUS)
-      {
-        _currentMenu = _selectedMenu; _selectedMenu++; // update current, selected menu
-        _menuchanged = true;
-      }
-    }
-    else if (strstr(buffer2, "[PREV]"))
-    {
-      if(_selectedMenu > 0)
-      {
-         _currentMenu = _selectedMenu; _selectedMenu--;  // update current, selected menu
-         _menuchanged = true;
-      }
-    }
-    else
-    {
-      _menuchanged = false;
-    }
     loopcount++;
 }
 
@@ -268,12 +327,7 @@ void report()
     if(!DEBUG1) return;
     _mx = getTouchPointX();
     _my = getTouchPointY();
-    Serial.print("\nTouch report:");
-    Serial.print("[");
-    Serial.print(_mx);
-    Serial.print("][");
-    Serial.print(_my);
-    Serial.print("]\n\n");
+    Serial.printf("\nTouch report: [%d] [%d] \n\n", _mx, _my);
 }
 
 void lcd_init()
@@ -290,7 +344,7 @@ void lcd_init()
 
     if (error == 0)
     {
-      if(DEBUG1) { Serial.print("I2C device found at address 0x"); Serial.print(TOUCH_I2C_ADD, HEX); Serial.println("  !\n"); }
+      if(DEBUG1) Serial.printf("I2C device found at address 0x%x\n", TOUCH_I2C_ADD);
     }
     else
     {
@@ -306,14 +360,16 @@ void buildButtons()
     int adj = 0;
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
+        //if(DEBUG1) Serial.printf("X[%3d] \t Y[%3d]", BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj);
         if(DEBUG1) { Serial.print("X["); Serial.printf("%3d", BUTTON_POS_X + i % 3 * 105); Serial.print("] \tY["); Serial.printf("%3d", BUTTON_POS_Y + i / 3 * 82 + adj); Serial.print("] \tLine["); }
 
         b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj, 103, 95, "NULL", ENABLE);
         b[i].setText(b_list[i]);
         b[i].setValue(i);
 
+        //if(DEBUG1) Serial.printf("\tLine [%2d] %s\n", i, b_list[i]);
         if(DEBUG1) { Serial.printf("%2d", i); Serial.print("]"); Serial.print(" = "); Serial.print(b_list[i]); Serial.print(""); }
-        
+
         if(i == 2 || i == 5 || i == 8 || i == 11) adj=adj+14; // track columns add 14px on each
         drawButton(b[i]);
     }
@@ -338,7 +394,7 @@ void drawButton(Button b)
     lcd.setTextSize(textSize);
 }
 
-void drawButton_p(Button b)
+void drawButton_p(Button b) // highlight on touch
 {
     int b_x;
     int b_y;
@@ -405,12 +461,12 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
 
     if (last_bracket) last_bracket++;
 
-    for (i = last_bracket; i < (str.length()); i++)
+    for (i = last_bracket; i < (str.length()-1); i++)
     {
         char c = str[i];
-        Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("]");
+        if(DEBUG1) Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("] ");
         buffer[j] = c;
-        Serial.print("\nProcessing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
+        if(DEBUG1) Serial.print("Processing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
         j++;
     }
 
@@ -438,4 +494,3 @@ void printStack(char *mytxt)
   
   stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd;
 }
-
