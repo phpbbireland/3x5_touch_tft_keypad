@@ -43,11 +43,9 @@ meld
 ```
 <br>
 <img src="/images/menu1.bmp" width=360>  
-Example Main menu (menu1.bmp)<br>
-<br>
+Example Main menu (menu1.bmp)<br><br>
 <img src="/images/menu5.bmp" width=360>  
-Example of menu screen with a few icons added (/images/menu5.bmp)  
-<br><br>
+Example media menu (/images/menu5.bmp)<br><br>
 
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
