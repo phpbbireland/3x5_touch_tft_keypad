@@ -18,7 +18,7 @@ We start with a 480px by 320px background image, it consists of 16 button areas 
 Then using an image editor, edit Grid480x320.bmp file and import the desired button icons (64px by 64px images works well) into each of the outlined button icons positions. Once finished, export the final image as menu1.bmp and save to SD card.  
 
 <br>
-<img src="/images/blankbg.bmp" width=480>  
+<img src="/images/blankbg.bmp" width=360>  
 blankbg.bmp  
 <br>
 
@@ -71,31 +71,24 @@ Each line of the menu text can contain:
 -  Any combination of keys up to 128 characters.  
 
 **After initial programming of the TFT board:**  
-All changes are made to the *menu1* text file and/or the *menu.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
+All changes are made to the *menu1* text file and/or the *menu1.bmp* image on the SD card, no need to recompile as these changes are imported from SD card on every boot.  
 
 *See **Grid480x320.bmp** example background image (without any icons) so you can add your own using image editing software.* 
 
-**Future:**  
-It should be possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 13 buttons ( two would be required for navigation).
+**Currently:**  
+It is possible to implement as many menus as required, for example, menus might allow loading of sub-menus, with each sub-menu having 12 or 13 buttons (two would be required for navigation, one addiional for HOME menu).
 ...
 
+***Future:***  
+Optional 5x4 layout (20 key) (keysGrid480x320.bmp),
 <br>
 <img src="/images/Grid480x320.bmp" width=480>  
-Optional 5x4 layout (20 key) (keysGrid480x320.bmp),  
-Anything is possible with edits to the code, you could use a larger TFT too...  
-<br><br>
-
-This project is very much based on sample code edited to suit. My contribution was simply getting different code samples to work nicely together. I wrote a lot of C and Assembly code in another life, my skills are somewhat lacking especially in relation to Strings, please make allowances for any poor code (it's been a very long time)...
-
-It appears to me that once you become familiar with an application, Macro Keyboards are really not required, at least, not for most basic programming tasks. But for the more complex Video/Audion editing, they still have a use. Even so, you can always repurpose this design for other applications.  
-
+Anything is possible with edits to the code, you could use a larger TFT.  
+Macro Keyboards are more useful for complex Video/Audion editing and hardware projects and they can always be repurpose.  
 Hope it's useful to someone.  
 
 ***Some updates:***  
-When dealing with multiple menus I did have an issues with stack being used up after many processes through the code, resulting in the device resetting. I have not determined the problem but if anyone has an ideas, please comment.
-If (when) the issue with the stack has been resolved, this could be a very useful project...  
-
-The ***tft_touch_keypad*** folder contains new code for multiple menus...  
+...  
 
 The ***alt*** [folder](alt/currentTestCode.ino) containg current code used during my latest tests. I has removed unnecessary code. Stack issue fixed (thanks to MicroController over at ESP32 forums).  
 
