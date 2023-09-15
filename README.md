@@ -43,8 +43,8 @@ meld
 ```
 <br>
 <img src="/images/menu1.bmp" width=360>  
-Main Menu Image menu1.bmp
-<br><br>
+Main menu test image (menu1.bmp)<br>
+<br>
 
 **Special keys:**  
 - [LA] = Left Alt - [RA] = Right Alt
