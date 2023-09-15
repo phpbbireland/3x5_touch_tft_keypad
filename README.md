@@ -43,7 +43,7 @@ meld
 
 <br>
 <img src="/images/menu1.bmp" width=360>  
-Main Menu  
+Main Menu Image menu1.bmp
 <br>
 ```
 **Special keys:**  
