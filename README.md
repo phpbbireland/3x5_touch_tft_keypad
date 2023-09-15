@@ -85,10 +85,9 @@ Anything is possible with edits to the code, you could use a larger TFT.
 Macro Keyboards are more useful for complex Video/Audion editing and hardware projects and they can always be repurpose.  
 Hope it's useful to someone.  
 
-***Some updates:***  
-...  
-
-The ***alt*** [folder](alt/currentTestCode.ino) containg current code used during my latest tests. I has removed unnecessary code. Stack issue fixed (thanks to MicroController over at ESP32 forums).  
+***Some updates:***
+- The ***alt*** [folder](alt/currentTestCode.ino) may contain code I am currently working on (latest tests).
+- Stack issue fixed (thanks to MicroController over at ESP32 forums).  
 
 Note, Some code is in the public domain (example code), remaining code © Michael O'Toole 2023  
 
