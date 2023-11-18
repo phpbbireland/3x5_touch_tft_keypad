@@ -1,5 +1,5 @@
 freecad
-[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
+[LC][SUP][K]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
 /opt/sublime_text/sublime_text
 /home/Mike/Downloads/arduino-1.8.19/arduino
 [T]ls -l
@@ -13,3 +13,5 @@ meld
 /home/Mike/AppImages/Stellarium.AppImage
 [LC]c
 [LC]v
+Notes can be written after line 15...
+I'ts probably better to assign shortcut 
