@@ -1,10 +1,10 @@
 freecad
-[LC][SUP][K]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
+[SUP][K]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
 /opt/sublime_text/sublime_text
 /home/Mike/Downloads/arduino-1.8.19/arduino
 [T]ls -l
 [LA]3
-/usr/share/playonlinux/playonlinux --run 'Fireworks'
+[SUP][F]/usr/share/playonlinux/playonlinux --run 'Fireworks'
 firefox
 xfce4-terminal
 kcalc
@@ -13,5 +13,7 @@ meld
 /home/Mike/AppImages/Stellarium.AppImage
 [LC]c
 [LC]v
-Notes can be written after line 15...
-I'ts probably better to assign shortcut 
+You can add notes after last menu line i.e. 15
+Rather than adding complex strings to you menu, just assign shortcut keys to application, and use theses in the Menu.
+You can use complex macro keys as you don't have to remember them. For example... Ctrl+Shift+Super+End... Not much chance
+of these being already assigned...
