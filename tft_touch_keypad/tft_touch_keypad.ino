@@ -299,12 +299,14 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); is_fcas_key = 1; }
     if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); is_fcas_key = 1; }
     
-    if (strstr(buffer2, "[SUP]")) { Keyboard.press(KEY_LEFT_GUI); is_fcas_key = 1; }    // added 18/11/23
-    if (strstr(buffer2, "[K]"))   { Keyboard.press('k');          is_fcas_key = 1; }    // added 18/11/23
+    if (strstr(buffer2, "[SUP]")) { Keyboard.press(KEY_LEFT_GUI); is_fcas_key = 1; }    
+    if (strstr(buffer2, "[K]"))   { Keyboard.press('k');          is_fcas_key = 1; }
+    if (strstr(buffer2, "[F]"))   { Keyboard.press('f');          is_fcas_key = 1; }
+    if (strstr(buffer2, "[S]"))   { Keyboard.press('s');          is_fcas_key = 1; }
     
-    if (strstr(buffer2, "[PW]")) { pass =  true; }                                      // added 18/11/23
+    if (strstr(buffer2, "[PW]")) { pass =  true; }
 
-    // Open in Terminal
+    // Open in Terminal (now we use shortcut keys).
     if (strstr(buffer2, "[T]"))
     {
         Keyboard.press(KEY_LEFT_CTRL);
