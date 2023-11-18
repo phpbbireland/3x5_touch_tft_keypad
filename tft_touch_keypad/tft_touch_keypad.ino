@@ -285,6 +285,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     // Open in Terminal
     if (strstr(buffer2, "[T]"))
     {
+        /*
         Keyboard.print(TERMINAL);
         Keyboard.write(KEY_RETURN);
         delay(350);
@@ -292,8 +293,33 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         Keyboard.write(KEY_RETURN);
         Keyboard.releaseAll();
         return;
+        */
+        Keyboard.press(KEY_LEFT_CTRL);
+        Keyboard.press(KEY_LEFT_ALT);
+        Keyboard.press('t');
+        delay(250);
+        Keyboard.releaseAll();
+        //if(pass) { Keyboard.print(PW); delay(100); Keyboard.write(KEY_RETURN); }
+        keyboard_print_macro(str);
+        delay(100);
+        Keyboard.write(KEY_RETURN);
+        Keyboard.releaseAll();
+        return;
     }
 
+    // Open in Application Finder first
+    if (strstr(buffer2, "[ALTF3]"))
+    {
+        Keyboard.press(KEY_LEFT_ALT);
+        Keyboard.press(KEY_F3);
+        delay(100);
+        Keyboard.releaseAll();
+        keyboard_print_macro(str);
+        delay(100);
+        Keyboard.write(KEY_RETURN);
+        return;
+    }
+    
     if (is_fcas_key)                // if special key, then use this process
     {
         keyboard_print_macro(str);
