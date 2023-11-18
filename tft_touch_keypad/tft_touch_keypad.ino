@@ -299,10 +299,10 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); is_fcas_key = 1; }
     if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); is_fcas_key = 1; }
     
-    if (strstr(buffer2, "[SUP]")) { Keyboard.press(KEY_LEFT_GUI); is_fcas_key = 1; }    
-    if (strstr(buffer2, "[K]"))   { Keyboard.press('k');          is_fcas_key = 1; }
+    if (strstr(buffer2, "[SUP]")) { Keyboard.press(KEY_LEFT_GUI); is_fcas_key = 1; }    // added 18/11/23
+    if (strstr(buffer2, "[K]"))   { Keyboard.press('k');          is_fcas_key = 1; }    // added 18/11/23
     
-    if (strstr(buffer2, "[PW]")) { pass =  true; }
+    if (strstr(buffer2, "[PW]")) { pass =  true; }                                      // added 18/11/23
 
     // Open in Terminal
     if (strstr(buffer2, "[T]"))
