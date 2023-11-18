@@ -296,7 +296,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
         */
         Keyboard.press(KEY_LEFT_CTRL);
         Keyboard.press(KEY_LEFT_ALT);
-        Keyboard.press('t');
+        Keyboard.press('t');    // use Lower Case t not capital T ?
         delay(250);
         Keyboard.releaseAll();
         //if(pass) { Keyboard.print(PW); delay(100); Keyboard.write(KEY_RETURN); }
