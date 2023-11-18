@@ -1,8 +1,9 @@
 /*
+* A rework of the code.ino to work with multiple menus/screens
 * Last tested: 09/09/23, 7:50 it compiles!
 * Last Edits:   Changed some var name for better readability..
 * Reboot 'after x loops' Fixed, thanks to MicroController over at ESP32 Forums (infinite recursion).
-* This is fully fubctioning code...
+* Board: ESP32S3 Dev Module
 */
 
 #define LGFX_USE_V1
@@ -49,6 +50,10 @@
 #define TERMINAL "xfce4-terminal"   // default terminal
 #define DEBUG1 1
 #define DEBUG2 1
+
+#define PW 130656
+
+int pass = false;
 
 LGFX lcd;
 USBHIDKeyboard Keyboard;
@@ -156,7 +161,9 @@ void set_current_menu_filename(int selected)
     lcd.setRotation(0);                   // reset rotation
 }
 
+
 //  Please note, menu files have 15 consecutive lines, no empty lines, no comments etc...
+
 void read_current_menu_file_macros_save_to_b_list(void)
 {
     int charcount = 0;
@@ -171,10 +178,20 @@ void read_current_menu_file_macros_save_to_b_list(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
+    
+    //Serial.printf("[%d][%c],);", chr, chr);
+    //Serial.printf("%c", chr);
+    //Serial.printf("%c", chr);
 
         if(chr == '\n')
         {
+            //buf[charcount] = '0';
+            b_list[llcount] = buf;
+
+            //Serial.print(b_list[llcount]); Serial.print("\n");
+            
             for(int x = 0; x < charcount; x++) buf[x] = 0;      // Stop strange behavior...
+
             llcount++;
             charcount = 0;
          }
@@ -281,25 +298,23 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[F10]")) { Keyboard.press(KEY_F10); is_fcas_key = 1; }
     if (strstr(buffer2, "[F11]")) { Keyboard.press(KEY_F11); is_fcas_key = 1; }
     if (strstr(buffer2, "[F12]")) { Keyboard.press(KEY_F12); is_fcas_key = 1; }
+    
+    if (strstr(buffer2, "[SUP]")) { Keyboard.press(KEY_LEFT_GUI); is_fcas_key = 1; }    
+    if (strstr(buffer2, "[K]"))   { Keyboard.press('k');          is_fcas_key = 1; }
+    
+    if (strstr(buffer2, "[PW]")) { pass =  true; }
 
     // Open in Terminal
     if (strstr(buffer2, "[T]"))
     {
-        /*
-        Keyboard.print(TERMINAL);
-        Keyboard.write(KEY_RETURN);
-        delay(350);
-        keyboard_print_macro(str);
-        Keyboard.write(KEY_RETURN);
-        Keyboard.releaseAll();
-        return;
-        */
         Keyboard.press(KEY_LEFT_CTRL);
         Keyboard.press(KEY_LEFT_ALT);
-        Keyboard.press('t');    // use Lower Case t not capital T ?
+        Keyboard.press('t');
         delay(250);
         Keyboard.releaseAll();
+                        
         //if(pass) { Keyboard.print(PW); delay(100); Keyboard.write(KEY_RETURN); }
+
         keyboard_print_macro(str);
         delay(100);
         Keyboard.write(KEY_RETURN);
@@ -322,6 +337,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     
     if (is_fcas_key)                // if special key, then use this process
     {
+        Keyboard.releaseAll();
         keyboard_print_macro(str);
         is_fcas_key = 0;
     }
@@ -374,14 +390,14 @@ void buildButtons()
     int adj = 0;
     for (int i = 0; i < BUTTONS_PER_PAGE; i++)
     {
-        //if(DEBUG1) Serial.printf("X[%3d] \t Y[%3d]", BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj); errorin code?
+        //if(DEBUG1) Serial.printf("X[%3d] \t Y[%3d]", BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj);
         if(DEBUG1) { Serial.print("X["); Serial.printf("%3d", BUTTON_POS_X + i % 3 * 105); Serial.print("] \tY["); Serial.printf("%3d", BUTTON_POS_Y + i / 3 * 82 + adj); Serial.print("] \tLine["); }
 
         b[i].set(BUTTON_POS_X + i % 3 * 105, BUTTON_POS_Y + i / 3 * 82 + adj, 103, 95, "NULL", ENABLE);
         b[i].setText(b_list[i]);
         b[i].setValue(i);
 
-        //if(DEBUG1) Serial.printf("\tLine [%2d] %s\n", i, b_list[i]); error in code 
+        //if(DEBUG1) Serial.printf("\tLine [%2d] %s\n", i, b_list[i]);
         if(DEBUG1) { Serial.printf("%2d", i); Serial.print("]"); Serial.print(" = "); Serial.print(b_list[i]); Serial.print(""); }
 
         if(i == 2 || i == 5 || i == 8 || i == 11) adj=adj+14; // track columns add 14px on each
@@ -400,6 +416,7 @@ void drawButton(Button b)
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
+
     lcd.drawRect(b_x, b_y, b_w, b_h, COLOR_LINE);
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setCursor(b_x + 2, b_y + b_w / 2 + 2);
@@ -417,6 +434,7 @@ void drawButton_p(Button b) // highlight on touch
     int textSize;
 
     b.getFoDraw(&b_x, &b_y, &b_w, &b_h, &text, &textSize);
+
     lcd.drawRect(b_x, b_y, b_w, b_h, TFT_WHITE);
     lcd.setCursor(b_x + 20, b_y + 20);
     lcd.setTextColor(COLOR_TEXT);
@@ -476,9 +494,9 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
     for (i = last_bracket; i < (str.length()-1); i++)
     {
         char c = str[i];
-        if(DEBUG1) Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("] ");
+        if(DEBUG1) { Serial.print("\nProcessing str[i] / char c: ["); Serial.print(c); Serial.print("] Storing in: ["); Serial.print(j); Serial.print("] "); }
         buffer[j] = c;
-        if(DEBUG1) Serial.print("Processing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")");
+        if(DEBUG1) { Serial.print("Processing buffer[j] = c it contains ("); Serial.print(buffer[j]); Serial.print(")"); }
         j++;
     }
 
@@ -490,10 +508,12 @@ void keyboard_print_macro(String str) // print menu line/macro after removing to
 // found on esp32,com ... modified ...very useful...
 void printStack(char *mytxt)
 {
+
   char *SpStart = NULL;
   char *StackPtrAtStart = (char *)&SpStart;
   
   UBaseType_t watermarkStart = uxTaskGetStackHighWaterMark(NULL);
+  
   char *StackPtrEnd = StackPtrAtStart - watermarkStart;
   
   if(stacktot == 0) { stackori = stacktot = (uint32_t)StackPtrAtStart - (uint32_t)StackPtrEnd; } 
