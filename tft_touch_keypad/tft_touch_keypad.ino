@@ -3,7 +3,7 @@
 * Last tested: 09/09/23, 7:50 it compiles!
 * Last Edits:   Changed some var name for better readability..
 * Reboot 'after x loops' Fixed, thanks to MicroController over at ESP32 Forums (infinite recursion).
-* Board: ESP32S3 Dev Module
+* Board: ESP32S3 Dev Module (My current test board).
 */
 
 #define LGFX_USE_V1
