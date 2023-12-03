@@ -48,8 +48,8 @@ meld
 [PREV]
 ```
 Menus are arranged in 5 colums 3 rows as in:
-3 6 9 12 15
-2 5 8 11 14
+3 6 9 12 15  
+2 5 8 11 14  
 1 4 7 10 13  
 
 <br>
