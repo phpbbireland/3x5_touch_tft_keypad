@@ -69,7 +69,7 @@ Example media menu (/images/menu5.bmp)<br><br>
 - [T]program_name... Launch program inside a terminal...
 - [?] *any single character (a-z), for use with conbinations such as Ctrl C or Alt x
 
-*You must add the appropiate character key to your code. Currently we have added K, F, and S.
+*You must add the appropiate character key to your code. Currently we have added K, F, and S to tft_touch_keypad.ino  
   
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of tft_touch_keypad.ino for required libraries), compile and upload tft_touch_keypad.ino.ino* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
