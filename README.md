@@ -67,6 +67,9 @@ Example media menu (/images/menu5.bmp)<br><br>
 - [F?] = Function Keys, F1 to F24 (example [F4], [F12] etc..) ***are these needed***)
 - [T]   = Open A Terminal
 - [T]program_name... Launch program inside a terminal...
+- [?] *any single character (a-z), for use with conbinations such as Ctrl C or Alt x
+
+*You must add the appropiate character key to your code. Currently we have added K, F, and S.
   
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of tft_touch_keypad.ino for required libraries), compile and upload tft_touch_keypad.ino.ino* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
