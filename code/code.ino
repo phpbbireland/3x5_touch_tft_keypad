@@ -1,3 +1,6 @@
+/* Old Code... use files in tft_touch_keypad directory */
+
+
 /* 
  *  Code last tested: 2023/08/19 ... Working! 
  *  
