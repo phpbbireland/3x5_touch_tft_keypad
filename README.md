@@ -47,6 +47,11 @@ meld
 /home/Mike/AppImages/Stellarium.AppImage
 [PREV]
 ```
+Menus are arranged in 5 colums 3 rows as in:
+3 6 9 12 15
+2 5 8 11 14
+1 4 7 10 13  
+
 <br>
 <img src="/images/menu1.bmp" width=360>  
 Example Main menu (menu1.bmp)<br><br>
