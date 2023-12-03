@@ -73,6 +73,7 @@ Example media menu (/images/menu5.bmp)<br><br>
 
 In your OS, it's probably best to use or assign new shortcuts to your application and then use these shortcuts in your Menus.  
 You can use complex combinations to avoide conflicts as you don't have to remember them once saved in the menu file.  
+I've taken to using Super + (any single character) giving me lots of launch options, for example Super+K launches kicad.
 
 **Programming:**  
 Install the Arduino IDE, add required libraries (see top of tft_touch_keypad.ino for required libraries), compile and upload tft_touch_keypad.ino.ino* sketch to the ESP32-S3 SPI board (don't forget to insert the SD card)...
