@@ -1,0 +1,15 @@
+[T]/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kicad --file-forwarding org.kicad.KiCad
+/opt/sublime_text/sublime_text
+/home/Mike/Downloads/arduino-1.8.19/arduino
+freecad
+[T]ls -l
+[LA]3
+/usr/share/playonlinux/playonlinux --run 'Fireworks'
+firefox
+xfce4-terminal
+kcalc
+[RA]4
+meld
+[NEXT]
+/home/Mike/AppImages/Stellarium.AppImage
+[PREV]
