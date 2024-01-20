@@ -3,7 +3,7 @@
 * Last Edits:   Changed code removed switch, replaced with sprintf...
 * Reboot 'after x loops' Fixed, thanks to MicroController over at ESP32 Forums (infinite recursion).
 *
-* Board: ESP32S3 Dev Module (My current test board).
+* Board: ESP32S3 Dev Module
 * 
 * Useful Links: https://www.arduino.cc/reference/en/language/functions/usb/keyboard/keyboardmodifiers/
 * Last Modified: 20 January 2024 02:02
@@ -48,7 +48,7 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-#define MAXMENUS         6           // Current max menus - 1 (we start with 0)
+#define MAXMENUS         6          // Current max menus starts at 1
 
 #define TERMINAL "xfce4-terminal"   // default terminal
 #define DEBUG1 1
@@ -146,14 +146,15 @@ void set_current_menu_filename(int selected)
     {
       return; // do nothing... no need to process
     }
-
+    
+    // Load Menu based on selected var if 0 use default menu 1
     if(selected > 0 && selected < MAXMENUS + 1)
     {
         sprintf(_filename, "%s%d%s", "/menu", selected, ".bmp");
         sprintf(_menuname, "%s%d",   "/menu", selected);
     }
     else
-    {
+    {   // load default menu 1
         strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1");
     }
 
