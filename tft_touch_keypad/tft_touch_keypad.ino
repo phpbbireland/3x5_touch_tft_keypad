@@ -1,9 +1,12 @@
 /*
 * A rework of the code.ino to work with multiple menus/screens
-* Last tested: 09/09/23, 7:50 it compiles!
-* Last Edits:   Changed some var name for better readability..
+* Last Edits:   Changed code removed switch, replaced with sprintf...
 * Reboot 'after x loops' Fixed, thanks to MicroController over at ESP32 Forums (infinite recursion).
+*
 * Board: ESP32S3 Dev Module (My current test board).
+* 
+* Useful Links: https://www.arduino.cc/reference/en/language/functions/usb/keyboard/keyboardmodifiers/
+* Last Modified: 20 January 2024 02:02
 */
 
 #define LGFX_USE_V1
@@ -45,7 +48,7 @@
 #define TOKEN_MAX_LENGTH 5
 #define MACRO_MAX_LENGTH 128
 #define MAX_MENU_ITEMS   15
-#define MAXMENUS         5           // Current max menus - 1 (we start with 0)
+#define MAXMENUS         6           // Current max menus - 1 (we start with 0)
 
 #define TERMINAL "xfce4-terminal"   // default terminal
 #define DEBUG1 1
@@ -144,16 +147,17 @@ void set_current_menu_filename(int selected)
       return; // do nothing... no need to process
     }
 
-    switch(selected) // could just use _menuname and append ext...
+    if(selected > 0 && selected < MAXMENUS + 1)
     {
-        case 1: { strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
-        case 2: { strcpy(_filename, "/menu2.bmp"); strcpy(_menuname, "/menu2"); } break;
-        case 3: { strcpy(_filename, "/menu3.bmp"); strcpy(_menuname, "/menu3"); } break;
-        case 4: { strcpy(_filename, "/menu4.bmp"); strcpy(_menuname, "/menu4"); } break;
-        case 5: { strcpy(_filename, "/menu5.bmp"); strcpy(_menuname, "/menu5"); } break;
-        case 6: { strcpy(_filename, "/menu6.bmp"); strcpy(_menuname, "/menu6"); } break;        
-        default:{ strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1"); } break;
+        sprintf(_filename, "%s%d%s", "/menu", selected, ".bmp");
+        sprintf(_menuname, "%s%d",   C"/menu", selected);
     }
+    else
+    {
+        strcpy(_filename, "/menu1.bmp"); strcpy(_menuname, "/menu1");
+    }
+
+    if(DEBUG1) { Serial.printf("\n[File = %s]", _filename); Serial.printf("\n[Menu = %s]\n", _menuname); }
 
     lcd.setRotation(5);                   // fix for touch not rotating
     print_img(SD, _filename, 480, 320);   // Load and display the Background Image / Menu
