@@ -150,7 +150,7 @@ void set_current_menu_filename(int selected)
     if(selected > 0 && selected < MAXMENUS + 1)
     {
         sprintf(_filename, "%s%d%s", "/menu", selected, ".bmp");
-        sprintf(_menuname, "%s%d",   C"/menu", selected);
+        sprintf(_menuname, "%s%d",   "/menu", selected);
     }
     else
     {
