@@ -7,6 +7,7 @@
 * 
 * Useful Links: https://www.arduino.cc/reference/en/language/functions/usb/keyboard/keyboardmodifiers/
 * Last Modified: 20 January 2024 02:02
+* Last Tested: 26 June 2024... Working...
 */
 
 #define LGFX_USE_V1
