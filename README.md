@@ -107,7 +107,8 @@ Hope it's useful to someone.
 
 ***Some updates:***
 - The ***alt*** [folder](alt/currentTestCode.ino) may contain code for testing if issues arise).
-- Stack issue fixed (thanks to MicroController over at ESP32 forums).  
+- Stack issue fixed (thanks to MicroController over at ESP32 forums).
+- In an ideal world we could edit the program excution code and change icons via a web interface... someday...
 
 Note, Some code is in the public domain (example code), remaining code © Michael O'Toole 2023  
 
