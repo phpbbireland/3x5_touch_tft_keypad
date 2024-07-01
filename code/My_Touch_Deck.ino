@@ -56,7 +56,7 @@
 #define DEBUG1 1
 #define DEBUG2 0
 
-#define PW 130656
+#define PW 130656B
 
 int pass = false;
 
@@ -293,7 +293,7 @@ void process_b_list_item_and_stuffkey_on_touch(String str)
     if (strstr(buffer2, "[MU]")) { Keyboard.press('M'); _menuchanged = false; Keyboard.releaseAll(); return; } // Mute
     if (strstr(buffer2, "[RD]")) { Keyboard.press('N'); _menuchanged = false; Keyboard.releaseAll(); return; } // Random
 */
-    // MEDIA MENU
+    // MEDIA MENU don't appear to be correct codes ?
     if (strstr(buffer2, "[<]"))  { Keyboard.press(KEY_MEDIA_PREVIOUSSONG); _menuchanged = false; Keyboard.releaseAll(); return; } //step (back) to previous song
     if (strstr(buffer2, "[>]"))  { Keyboard.press(KEY_MEDIA_NEXTSONG); _menuchanged = false; Keyboard.releaseAll(); return; } //step to next song in playlist
     if (strstr(buffer2, "[P]"))  { Keyboard.press(KEY_MEDIA_PLAYPAUSE); _menuchanged = false; Keyboard.releaseAll(); return; }  //Play/Pause
