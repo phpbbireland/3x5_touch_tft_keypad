@@ -57,7 +57,7 @@
 #define DEBUG1 1
 #define DEBUG2 1
 
-#define PW 130656
+#define PW 130656A // for testing passwords
 
 int pass = false;
 
