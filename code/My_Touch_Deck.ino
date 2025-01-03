@@ -190,24 +190,18 @@ void read_current_menu_file_macros_save_to_b_list(void)
       {
         chr =  myfile.read();
         buf[charcount++] = chr;
-
-    //Serial.printf("[%d][%c],);", chr, chr);
-    //Serial.printf("%c", chr);
-    //Serial.printf("%c", chr);
+        
+        //Serial.printf("[%d][%c],);", chr, chr); //Serial.printf("%c", chr); //Serial.printf("%c", chr);
 
         if(chr == '\n')
         {
-            //buf[charcount] = '0';
             b_list[llcount] = buf;
-
             //Serial.print(b_list[llcount]); Serial.print("\n");
-
             for(int x = 0; x <= charcount; x++) buf[x] = 0;      // Stop strange behavior...
-
             llcount++;
             charcount = 0;
          }
-         if(llcount > 14) break; // !!! important ... only read 15 lines/macros
+         if(llcount > 14) break; // !!! important ... only read 15 lines/macros comments/note can be placed after these
        }
        myfile.close();
     }
